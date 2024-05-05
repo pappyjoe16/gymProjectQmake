@@ -14,10 +14,6 @@ Rectangle {
     width: 410
     height: 740
     anchors.fill: parent
-    anchors.rightMargin: 0
-    anchors.bottomMargin: 0
-    anchors.leftMargin: 0
-    anchors.topMargin: 0
 
     Image {
         id: quickstartImage
@@ -44,12 +40,18 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: pageloader.pageLoader("connectPage")
+                onClicked: {
+                    pageloader.pageLoader("connectPage")
+                    console.log("Quick Image clicked!")
+                }
             }
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: pageloader.pageLoader("connectPage")
+            onClicked: {
+                pageloader.pageLoader("connectPage")
+                console.log("Quick Image clicked!")
+            }
         }
         anchors {
             left: parent.left
@@ -112,7 +114,8 @@ Rectangle {
         target: pageloader
         function onSwitchToConnectPage() {
             deviceConnectPage.visible = true
-            quickStartPage.visible = false
+            roundSelectPage.visible = false
+            device.startDeviceDiscovery()
         }
     }
 }

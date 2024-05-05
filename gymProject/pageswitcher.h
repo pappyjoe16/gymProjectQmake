@@ -21,7 +21,10 @@ signals:
     void switchToConnectPage();
     void switchBackToConnectPage();
     void switchToQuickstart();
-
+    void switchToBLEConnect();
+    void switchBackToHeartRateDevice();
+    void switchToHeartRateDevice();
+    void switchToSensorReadingPage();
 
 public slots:
 

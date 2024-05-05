@@ -32,6 +32,13 @@ void Pageswitcher::pageLoader(QString page)
         emit switchBackToConnectPage();
     }else if(page == "backToQuickstart"){
         emit switchToQuickstart();
+    } else if (page == "backToBLEConnect") {
+        emit switchToBLEConnect();
+    } else if (page == "backToHeartRateDevice") {
+        emit switchBackToHeartRateDevice();
+    } else if (page == "ToHeartRateDevice") {
+        emit switchToHeartRateDevice();
+    } else if (page == "ToSensorReadingPage") {
+        emit switchToSensorReadingPage();
     }
-
 }

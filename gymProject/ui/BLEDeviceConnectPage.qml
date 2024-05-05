@@ -39,7 +39,11 @@ Rectangle {
         highlighted: true
         flat: false
         anchors.topMargin: 16
-        onClicked: pageloader.pageLoader("backToQuickstart")
+        onClicked: {
+            pageloader.pageLoader("backToQuickstart")
+            bleModelRight.clear()
+            bleModelLeft.clear()
+        }
 
         anchors {
             left: parent.left
@@ -75,6 +79,91 @@ Rectangle {
             source: "qrc:/ui/assets/images/leftSensor1.png"
             fillMode: Image.PreserveAspectFit
         }
+
+        Rectangle {
+            id: leftViewContainer
+            color: "#e6e6e6"
+            radius: 14
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: leftSensorImage.bottom
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 12
+            anchors.rightMargin: 13
+            anchors.topMargin: 6
+            anchors.bottomMargin: 10
+            visible: false
+
+            ListView {
+                id: bleListViewLeft
+                anchors.fill: parent
+                model: bleModelLeft
+                clip: true
+                spacing: 5
+                width: parent.width // Adjust width as needed
+                height: parent.height // Adjust height as needed
+
+                delegate: Rectangle {
+
+                    width: bleListViewLeft.width
+                    height: 50
+                    color: index % 2 === 0 ? "#262626" : "#404040"
+                    radius: 14
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            //device.connectDevice(bleAddress)
+                            console.log(bleName + ": " + bleAddress)
+                        }
+                    }
+
+                    Text {
+                        text: bleName // Display the BLE name
+                        anchors.centerIn: parent
+                        anchors.left: parent.left
+                        leftPadding: 10
+                        font.pixelSize: 16
+                        color: "white"
+                    }
+                    Text {
+                        text: bleAddress // Display the BLE address
+                        anchors.centerIn: parent
+                        anchors.right: parent.right
+                        rightPadding: 10
+                        font.pixelSize: 16
+                        color: "white"
+                        visible: false
+                    }
+                }
+            }
+
+            function addBleDevicLeft(bleName, bleAddress) {
+                // Check if the bleAddress already exists in the model
+                var addressExists = false
+                for (var i = 0; i < bleModelLeft.count; ++i) {
+                    if (bleModelLeft.get(i).bleAddress === bleAddress) {
+                        addressExists = true
+                        break
+                    }
+                }
+
+                // If bleAddress doesn't exist, append the new device
+                if (!addressExists) {
+                    bleModelLeft.append({
+                                        "bleName": bleName,
+                                        "bleAddress": bleAddress
+                                    })
+                } else {
+                    // Handle the case when the address already exists (optional)
+                    console.log("Address already exists: " + bleAddress)
+                }
+            }
+
+            ListModel {
+                id: bleModelLeft
+            }
+        }
     }
 
     Rectangle {
@@ -92,7 +181,7 @@ Rectangle {
 
         Image {
             id: rightSensorImage
-            height: 128
+            height: 137
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -101,6 +190,90 @@ Rectangle {
             anchors.topMargin: 20
             source: "qrc:/ui/assets/images/rightSensor.png"
             fillMode: Image.PreserveAspectFit
+        }
+
+        Rectangle {
+            id: rightViewContainer
+            color: "#e6e6e6"
+            radius: 14
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: rightSensorImage.bottom
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 12
+            anchors.rightMargin: 13
+            anchors.topMargin: 6
+            anchors.bottomMargin: 10
+            visible: false
+
+            ListView {
+                id: bleListViewRight
+                anchors.fill: parent
+                model: bleModelRight
+                clip: true
+                spacing: 5
+                width: parent.width // Adjust width as needed
+                height: parent.height // Adjust height as needed
+
+                delegate: Rectangle {
+
+                    width: bleListViewRight.width
+                    height: 50
+                    color: index % 2 === 0 ? "#262626" : "#404040"
+                    radius: 14
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            //device.connectDevice(bleAddress)
+                            console.log(bleName + ": " + bleAddress)
+                        }
+                    }
+
+                    Text {
+                        text: qsTr(bleName) // Display the BLE name
+                        anchors.centerIn: parent
+                        anchors.left: parent.left
+                        leftPadding: 10
+                        font.pixelSize: 16
+                        color: "white"
+                    }
+                    Text {
+                        text: bleAddress // Display the BLE address
+                        anchors.centerIn: parent
+                        rightPadding: 10
+                        font.pixelSize: 16
+                        color: "white"
+                        visible: false
+                    }
+                }
+            }
+
+            function addBleDevicRight(bleName, bleAddress) {
+                // Check if the bleAddress already exists in the model
+                var addressExists = false
+                for (var i = 0; i < bleModelRight.count; ++i) {
+                    if (bleModelRight.get(i).bleAddress === bleAddress) {
+                        addressExists = true
+                        break
+                    }
+                }
+
+                // If bleAddress doesn't exist, append the new device
+                if (!addressExists) {
+                    bleModelRight.append({
+                                        "bleName": bleName,
+                                        "bleAddress": bleAddress
+                                    })
+                } else {
+                    // Handle the case when the address already exists (optional)
+                    console.log("Address already exists: " + bleAddress)
+                }
+            }
+
+            ListModel {
+                id: bleModelRight
+            }
         }
     }
 
@@ -117,6 +290,10 @@ Rectangle {
         anchors.bottomMargin: 26
         font.pointSize: 16
         highlighted: true
+        onClicked: {
+            pageloader.pageLoader("ToHeartRateDevice")
+
+        }
     }
 
     Label {
@@ -204,12 +381,32 @@ Rectangle {
     Connections {
         target: pageloader
         function onSwitchToQuickstart() {
-            quickStartPage.visible = true
+            roundSelectPage.visible = true
             deviceConnectPage.visible = false
         }
         function onSwitchToHelpPage() {
             helpPage.visible = true
             deviceConnectPage.visible = false
         }
+        function onSwitchToHeartRateDevice() {
+            deviceConnectPage.visible = false
+            heartRateDevicePage.visible = true
+            device.startDeviceDiscovery()
+        }
+    }
+
+    Connections {
+        target: device
+        function onSendAddressLeft(bleName, bleAddress) {
+            leftViewContainer.visible = true
+            //console.log(bleName + ": " + bleAddress)
+            leftViewContainer.addBleDevicLeft(bleName, bleAddress)
+        }
+        function onSendAddressRight(bleName, bleAddress) {
+            rightViewContainer.visible = true
+            //console.log(bleName + ": " + bleAddress)
+            rightViewContainer.addBleDevicRight(bleName, bleAddress)
+        }
+
     }
 }

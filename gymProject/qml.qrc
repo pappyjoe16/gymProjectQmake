@@ -959,5 +959,22 @@
         <file>ui/QuickStartPage.qml</file>
         <file>ui/SignupPage.qml</file>
         <file>ui/UserInfoPage.qml</file>
+        <file>ui/assets/images/boxing.png</file>
+        <file>ui/assets/images/boxingOff.png</file>
+        <file>ui/assets/images/DataOff.png</file>
+        <file>ui/assets/images/dataOn.png</file>
+        <file>ui/assets/images/mineOff.png</file>
+        <file>ui/assets/images/mineOn.png</file>
+        <file>ui/DataPage.qml</file>
+        <file>ui/ProfilePage.qml</file>
+        <file>ui/HeartRateDevicePage.qml</file>
+        <file>ui/assets/images/hart-bit.jpg</file>
+        <file>ui/assets/images/heartrate.jpg</file>
+        <file>ui/SensorReadingPage.qml</file>
+        <file>ui/assets/images/google.png</file>
+        <file>ui/assets/images/next.png</file>
+        <file>ui/assets/images/user.png</file>
+        <file>ui/DataEntry.qml</file>
+        <file>ui/RoundSelectPage.qml</file>
     </qresource>
 </RCC>

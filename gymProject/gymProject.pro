@@ -1,22 +1,29 @@
-QT += quick network bluetooth core-private
+QT += quick network bluetooth
+QT += qml quick widgets core5compat
 
 CONFIG += c++17
 TARGET = test2
 TEMPLATE = app
 
 SOURCES += \
+    #bledevicelistmodel.cpp \
+    device.cpp \
+    #deviceconnect.cpp \
+    deviceinfo.cpp \
     main.cpp \
     pageswitcher.cpp \
     authhandler.cpp \
-    blemanager.cpp \
-    blescanner.cpp \
+    #blescanner.cpp \
     base64format.cpp
 
 HEADERS += \
+    #bledevicelistmodel.h \
+    device.h \
+    #deviceconnect.h \
+    deviceinfo.h \
     pageswitcher.h \
     authhandler.h \
-    blemanager.h \
-    blescanner.h \
+    #blescanner.h \
     base64format.h \
 
 

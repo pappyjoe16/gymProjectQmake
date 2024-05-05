@@ -5,15 +5,21 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QImage>
-#include <QJniObject>
 #include <QUrl>
-#include <QtCore/private/qandroidextras_p.h>
 #include <QtQml>
 
-Base64format::Base64format(QObject *parent) : QObject(parent) {}
+Base64format::Base64format(QObject *parent)
+    : QObject(parent)
+{}
+
+Base64format::~Base64format()
+{
+    qInfo() << "Base64format is deconstructed";
+}
 
 void Base64format::handleUserProfileImage(const QString &imageUrl)
 {
+    //qDebug() << "I handleUserProfileImage is called";
     QUrl url(imageUrl);
 
     //qDebug() << "File localUrl: " << imageUrl;
@@ -33,7 +39,7 @@ void Base64format::handleUserProfileImage(const QString &imageUrl)
         return;
     }
 
-    qDebug() << "File Path:" << filePath;
+    //qDebug() << "File Path:" << filePath;
 
     if (!image.load(filePath)) {
         qInfo() << "Failed to load the image.";
@@ -47,8 +53,10 @@ void Base64format::handleUserProfileImage(const QString &imageUrl)
     QString base64String = buffer.data().toBase64();
 
     // Process the Base64 string or perform other actions
-    qInfo() << "Base64 User Profile Image: " << base64String;
+    //qDebug() << "Base64 User Profile Image: " << base64String;
+    //qDebug() << "I returned the value i got.....";
     emit sendBase64String(base64String);
+    //return base64String;
 }
 
 bool Base64format::isContentUri(const QString &uri)

@@ -9,13 +9,15 @@ class Base64format : public QObject
     Q_OBJECT
 public:
    explicit Base64format(QObject *parent = nullptr);
+   ~Base64format();
+   Q_INVOKABLE void handleUserProfileImage(const QString &imageUrl);
 
-public slots:
-    void handleUserProfileImage(const QString &imageUrl);
-    bool isContentUri(const QString& uri);
+   public slots:
 
-signals:
-    void sendBase64String(const QString base64String);
+   bool isContentUri(const QString &uri);
+
+   signals:
+   void sendBase64String(const QString base64String);
 
 
 };

@@ -16,6 +16,11 @@ Image {
     z: -1
     fillMode: Image.Stretch
 
+    function callLogin(username, password) {
+
+        authHandler.setAPIKey("AIzaSyAiBfude-2sHoh7qPj_lVxhD5xSxtfSozk")
+        authHandler.signUserIn(username, password)
+    }
     Button {
         id: backButton
         height: 45
@@ -67,8 +72,12 @@ Image {
                 errorPopup.text = "Password must be at least \n      8 characters long."
                 errorPopup.open()
             } else {
+                var encryptedPassword = authHandler.encryptPassword(
+                            passwordInput.text)
+                signupPage.saveLoginDetails(emailAddress.text,
+                                            encryptedPassword)
                 authHandler.setAPIKey("AIzaSyAiBfude-2sHoh7qPj_lVxhD5xSxtfSozk")
-                authHandler.signUserIn(emailAddress.text, passwordInput.text)
+                authHandler.signUserIn(emailAddress.text, encryptedPassword)
             }
         }
     }
@@ -230,7 +239,7 @@ Image {
                 errorPopup.text = "Successful Login"
                 errorPopup.open()
                 loginPage.visible = false
-                quickStartPage.visible = true
+                roundSelectPage.visible = true
             }
         }
     }

@@ -5,8 +5,9 @@
 #include <QSslSocket>
 #include "authhandler.h"
 #include "base64format.h"
-#include "blemanager.h"
-#include "blescanner.h"
+//#include "bledevicelistmodel.h"
+//#include "blescanner.h"
+#include "device.h"
 #include "pageswitcher.h"
 
 int main(int argc, char *argv[])
@@ -18,14 +19,16 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    //Q_LOGGING_CATEGORY(defaultLog, "default");
+
     //Pageswitcher pageControl;
     //AuthHandler authHandler;
 
     qmlRegisterType<Base64format>("Base64format", 1, 0, "Base64format");
-    qmlRegisterType<BleScanner>("ScanDevice", 1, 0, "BleScanner");
-    qmlRegisterType<BLEManager>("ManageDevice", 1, 0, "BLEManager");
-    qmlRegisterType<Pageswitcher>("PageController", 1, 0, "Pageswitcher");
-    qmlRegisterType<AuthHandler>("Authentication", 1, 0, "AuthHandler");
+    //qmlRegisterType<BLEDeviceListModel>("BLEDeviceListModel", 1, 0, "BLEDeviceListModel");
+    qmlRegisterType<Pageswitcher>("Pageswitcher", 1, 0, "Pageswitcher");
+    qmlRegisterType<AuthHandler>("AuthHandler", 1, 0, "AuthHandler");
+    qmlRegisterType<Device>("Device", 1, 0, "Device");
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(
