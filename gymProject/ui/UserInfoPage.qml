@@ -447,6 +447,7 @@ Rectangle {
         function onUserAdded() {
             userInfoPage.visible = false
             roundSelectPage.visible = true
+            authHandler.retriveProfile()
         }
     }
 }

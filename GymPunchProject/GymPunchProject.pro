@@ -1,6 +1,7 @@
 QT += quick network bluetooth
 QT += qml quick widgets core
-
+QT +=  networkauth
+QT += httpserver
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -10,14 +11,15 @@ CONFIG += c++17
 TEMPLATE = app
 
 SOURCES += \
-        authhandler.cpp \
-        base64format.cpp \
-        bledevicelistmodel.cpp \
-        #device.cpp \
-        deviceconnect.cpp \
-        deviceinfo.cpp \
-        main.cpp \
-        pageswitcher.cpp
+    boxingdata.cpp \
+    device.cpp \
+    deviceinfo.cpp \
+    #googlesso.cpp \
+    main.cpp \
+    pageswitcher.cpp \
+    authhandler.cpp \
+    base64format.cpp
+
 
 RESOURCES += qml.qrc
 
@@ -33,13 +35,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    boxingdata.h \
+    device.h \
+    deviceinfo.h \
+    #googlesso.h \
+    pageswitcher.h \
     authhandler.h \
     base64format.h \
-    bledevicelistmodel.h \
-    #device.h \
-    deviceconnect.h \
-    deviceinfo.h \
-    pageswitcher.h
 
 
 ANDROID {

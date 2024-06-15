@@ -81,7 +81,8 @@ Rectangle {
         }
 
         onClicked: {
-            pageloader.pageLoader("sensorReadingPage")
+            pageloader.pageLoader("ToSensorReadingPage")
+
         }
     }
 
@@ -250,11 +251,12 @@ Rectangle {
             heartRateDevicePage.visible = false
         }
         function onSwitchToSensorReadingPage() {
+            device.connectDevice(addressLabel.text)
             console.log("New Heart Address: " + addressLabel.text)
             sensorReadingPage.visible = true
             heartRateDevicePage.visible = false
-            device.connectDevice(addressLabel.text)
         }
+
     }
 
     Connections {

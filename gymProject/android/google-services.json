@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "981640700306",
+    "firebase_url": "https://gympunchtracker-default-rtdb.firebaseio.com",
+    "project_id": "gympunchtracker",
+    "storage_bucket": "gympunchtracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981640700306:android:50bf609101767b3713e14b",
+        "android_client_info": {
+          "package_name": "gympunchtracker.firebaseapp.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981640700306-0r5qsvipvg358kgcsmbf72jngh9no21b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gympunchtracker.firebaseapp.com",
+            "certificate_hash": "6f0b8d7e653655409f1c30a12b632342dd006ebc"
+          }
+        },
+        {
+          "client_id": "981640700306-n1dc86nhr6fatga2affoirmg1tji21d8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmzWxVSGaolPUToZiVCdB5oo4Ffl5Afhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981640700306-n1dc86nhr6fatga2affoirmg1tji21d8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -120,7 +120,7 @@ Image {
             } else {
                 var encryptedPassword = authHandler.encryptPassword(
                             passwordInput.text)
-                authHandler.setAPIKey("AIzaSyAiBfude-2sHoh7qPj_lVxhD5xSxtfSozk")
+                authHandler.setAPIKey("AIzaSyAmzWxVSGaolPUToZiVCdB5oo4Ffl5Afhs")
                 authHandler.signUserUp(emailAddress.text, encryptedPassword)
                 saveLoginDetails(emailAddress.text, encryptedPassword)
             }
@@ -351,6 +351,7 @@ Image {
         icon.color: "#00885757"
         icon.source: "qrc:/ui/assets/images/google.png"
 
+        onClicked: authHandler.authenticateWithGoogle()
         Text {
             id: name
             text: qsTr("Continue with Google")

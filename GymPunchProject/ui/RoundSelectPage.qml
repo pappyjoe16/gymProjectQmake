@@ -30,10 +30,13 @@ Rectangle {
             onClicked: stackLayout.currentIndex = 1
         }
         TabButton {
-            text: qsTr("Activity")
+            text: qsTr("Profile")
             icon.source: "qrc:/ui/assets/images/mineOn.png"
             display: AbstractButton.TextUnderIcon
-            onClicked: stackLayout.currentIndex = 2
+            onClicked: {
+
+                stackLayout.currentIndex = 2
+            }
         }
     }
 
@@ -45,19 +48,29 @@ Rectangle {
         anchors.bottom: tabBar.top
 
         Loader {
-            source: "DataPage.qml"
+            source: "QuickStartPage.qml"
             visible: stackLayout.currentIndex === 0
-            onLoaded: item.activeChanged.connect(function() { tabBar.currentIndex = 0; });
+            onLoaded: //item.activeChanged.connect(function () {
+            {
+                tabBar.currentIndex = 0
+            }
         }
         Loader {
-            source: "HeartRatePage.qml"
+            source: "DataPage.qml"
             visible: stackLayout.currentIndex === 1
-            onLoaded: item.activeChanged.connect(function() { tabBar.currentIndex = 1; });
+            onLoaded: //item.activeChanged.connect(function () {
+            {
+                tabBar.currentIndex = 1
+            }
         }
         Loader {
-            source: "UITest.qml"
+            source: "ProfilePage.qml"
             visible: stackLayout.currentIndex === 2
-            onLoaded: item.activeChanged.connect(function() { tabBar.currentIndex = 2; });
+            onLoaded: //item.activeChanged.connect(function () {
+            {
+                tabBar.currentIndex = 2
+                //authHandler.retriveProfile()
+            }
         }
     }
 }

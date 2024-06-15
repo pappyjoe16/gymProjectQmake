@@ -51,7 +51,6 @@ void Device::startDeviceDiscovery()
         qDebug() << "Error Bluetooth permissions not granted!";
         return;
     case Qt::PermissionStatus::Granted:
-        qDebug() << "Permission Granted";
         break; // proceed to search
     }
     //! [permissions]

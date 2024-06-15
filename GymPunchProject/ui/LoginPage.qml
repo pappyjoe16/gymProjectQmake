@@ -18,7 +18,7 @@ Image {
 
     function callLogin(username, password) {
 
-        authHandler.setAPIKey("AIzaSyAiBfude-2sHoh7qPj_lVxhD5xSxtfSozk")
+        authHandler.setAPIKey("AIzaSyAmzWxVSGaolPUToZiVCdB5oo4Ffl5Afhs")
         authHandler.signUserIn(username, password)
     }
     Button {
@@ -239,7 +239,8 @@ Image {
                 errorPopup.text = "Successful Login"
                 errorPopup.open()
                 loginPage.visible = false
-                quickStartPage.visible = true
+                roundSelectPage.visible = true
+                authHandler.retriveProfile()
             }
         }
     }

@@ -1,29 +1,27 @@
 QT += quick network bluetooth
 QT += qml quick widgets core5compat
+QT +=  networkauth
+QT += httpserver
 
 CONFIG += c++17
 TARGET = test2
 TEMPLATE = app
 
 SOURCES += \
-    #bledevicelistmodel.cpp \
     device.cpp \
-    #deviceconnect.cpp \
     deviceinfo.cpp \
+    #googlesso.cpp \
     main.cpp \
     pageswitcher.cpp \
     authhandler.cpp \
-    #blescanner.cpp \
     base64format.cpp
 
 HEADERS += \
-    #bledevicelistmodel.h \
     device.h \
-    #deviceconnect.h \
     deviceinfo.h \
+    #googlesso.h \
     pageswitcher.h \
     authhandler.h \
-    #blescanner.h \
     base64format.h \
 
 
@@ -49,5 +47,13 @@ win32 {
 }
 
 OTHER_FILES += \
-    android/AndroidManifest.xml
+    #android/AndroidManifest.xml
+
+contains(ANDROID_TARGET_ARCH,arm64-v8a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
+}
+
+DISTFILES += \
+    #android/google-services.json
 

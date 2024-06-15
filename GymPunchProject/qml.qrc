@@ -972,5 +972,9 @@
         <file>ui/SignupPage.qml</file>
         <file>ui/UserInfoPage.qml</file>
         <file>android/AndroidManifest.xml</file>
+        <file>ui/DataEntry.qml</file>
+        <file>ui/RoundSelectPage.qml</file>
+        <file>ui/assets/images/next.png</file>
+        <file>ui/assets/images/user.png</file>
     </qresource>
 </RCC>

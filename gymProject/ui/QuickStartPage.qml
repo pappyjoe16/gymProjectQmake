@@ -114,6 +114,7 @@ Rectangle {
         target: pageloader
         function onSwitchToConnectPage() {
             deviceConnectPage.visible = true
+            quickStartPage.visible = false
             roundSelectPage.visible = false
             device.startDeviceDiscovery()
         }

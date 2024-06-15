@@ -1,9 +1,10 @@
-//import QtCore
+import QtCore
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs
 import QtQuick.Layouts 2.15
 
+//import Qt.labs.platform
 Rectangle {
     id: rectangle
     width: 410
@@ -25,6 +26,9 @@ Rectangle {
         }
         orientation: Gradient.Vertical
     }
+
+    property string qmlbase64String: ""
+
     anchors.fill: parent
     anchors.rightMargin: 0
     anchors.bottomMargin: 0
@@ -64,15 +68,16 @@ Rectangle {
     FileDialog {
         id: fileDialog
         title: "Select an image"
-        //folder: shortcuts.home
+
         nameFilters: ["Image files (*.png *.jpg *.jpeg)"]
         currentFolder: StandardPaths.standardLocations(
                            StandardPaths.PicturesLocation)[0]
-        // onAccepted: profileImage.source = selectedFile
+        //onAccepted: profileImage.source = selectedFile
         onAccepted: {
             var fileUrl = fileDialog.selectedFile
             if (fileUrl !== "") {
                 profileImage.source = selectedFile
+                //console.log("Now I will call base64format function....")
                 base64format.handleUserProfileImage(profileImage.source)
             }
         }
@@ -105,21 +110,19 @@ Rectangle {
 
     TextField {
         id: userNameField
-        x: 47
-        y: 247
         width: 317
-        height: 36
+        height: 49
         placeholderText: qsTr("Enter your name")
         placeholderTextColor: "#100412"
         font.pixelSize: 18
         maximumLength: 100
         echoMode: TextInput.Normal
 
-        anchors.topMargin: 228
+        anchors.topMargin: 23
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: profileImage.bottom
             rightMargin: 46
             leftMargin: 40
         }
@@ -143,16 +146,16 @@ Rectangle {
 
     ComboBox {
         id: genderBox
-        height: 36
+        height: 49
 
         textRole: "text"
         valueRole: "value"
         font.pixelSize: 18
-        anchors.topMargin: 267
+        anchors.topMargin: 13
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: userNameField.bottom
             rightMargin: 46
             leftMargin: 40
         }
@@ -185,15 +188,15 @@ Rectangle {
 
     ComboBox {
         id: ageBox
-        height: 36
-        anchors.topMargin: 311
+        height: 49
+        anchors.topMargin: 16
         font.pixelSize: 18
         valueRole: "value"
         textRole: "text"
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: genderBox.bottom
             rightMargin: 46
             leftMargin: 40
         }
@@ -227,16 +230,15 @@ Rectangle {
 
     ComboBox {
         id: heightBox
-        height: 36
-
-        anchors.topMargin: 354
+        height: 49
+        anchors.topMargin: 16
         font.pixelSize: 18
         valueRole: "value"
         textRole: "text"
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: ageBox.bottom
             rightMargin: 46
             leftMargin: 40
         }
@@ -269,15 +271,15 @@ Rectangle {
     }
     ComboBox {
         id: weightBox
-        height: 36
-        anchors.topMargin: 398
+        height: 49
+        anchors.topMargin: 16
         font.pixelSize: 18
         valueRole: "value"
         textRole: "text"
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: heightBox.bottom
             rightMargin: 46
             leftMargin: 40
         }
@@ -310,15 +312,15 @@ Rectangle {
     }
     ComboBox {
         id: handBox
-        height: 36
-        anchors.topMargin: 441
+        height: 49
+        anchors.topMargin: 16
         textRole: "text"
         valueRole: "value"
         font.pixelSize: 18
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: weightBox.bottom
             rightMargin: 46
             leftMargin: 40
         }
@@ -365,8 +367,7 @@ Rectangle {
     }
 
     Button {
-        id: signUp
-        y: 554
+        id: saveButton
         height: 63
         text: qsTr("Save profile")
         font.family: "Tahoma"
@@ -374,7 +375,7 @@ Rectangle {
         font.italic: false
         font.pointSize: 15
         highlighted: false
-        anchors.bottomMargin: 143
+        anchors.bottomMargin: 58
         anchors {
             left: parent.left
             right: parent.right
@@ -392,10 +393,17 @@ Rectangle {
                 errorPopup.text = "All fields are required."
                 errorPopup.open()
             } else {
-                console.log("Your details are as following: " + userNameField.text + "\t"
-                            + genderBox.currentText + "\t" + ageBox.currentText
-                            + "\t" + heightBox.currentText + "\t"
-                            + weightBox.currentText + "\t" + handBox.currentText)
+                // console.log("Your details are as following: " + userNameField.text
+                //             + "\t" + genderBox.currentText + "\t" + ageBox.currentText
+                //             + "\t" + heightBox.currentText + "\t" + weightBox.currentText
+                //             + "\t" + handBox.currentText + "\t" + rectangle.qmlbase64String)
+                authHandler.addUserProfile(userNameField.text,
+                                               genderBox.currentText,
+                                               ageBox.currentText,
+                                               heightBox.currentText,
+                                               weightBox.currentText,
+                                               handBox.currentText,
+                                               rectangle.qmlbase64String)
             }
         }
     }
@@ -428,8 +436,18 @@ Rectangle {
     Connections {
         target: base64format
         function onSendBase64String(base64String) {
-            var qmBbase64String = base64String
-            baseImage.source = "data:image/png;base64," + qmBbase64String
+            rectangle.qmlbase64String = "data:image/png;base64," + base64String
+            //console.log("I am Emitted: " + base64String)
+            //baseImage.source = rectangle.qmlbase64String
+        }
+    }
+
+    Connections {
+        target: authHandler
+        function onUserAdded() {
+            userInfoPage.visible = false
+            roundSelectPage.visible = true
+            authHandler.retriveProfile()
         }
     }
 }

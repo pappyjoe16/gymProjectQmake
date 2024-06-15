@@ -8,7 +8,6 @@
 #include <QSslSocket>
 #include "authhandler.h"
 #include "base64format.h"
-#include "bledevicelistmodel.h"
 #include "device.h"
 #include "pageswitcher.h"
 
@@ -22,7 +21,6 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     qmlRegisterType<Base64format>("Base64format", 1, 0, "Base64format");
-    qmlRegisterType<BLEDeviceListModel>("BLEDeviceListModel", 1, 0, "BLEDeviceListModel");
     qmlRegisterType<Pageswitcher>("Pageswitcher", 1, 0, "Pageswitcher");
     qmlRegisterType<AuthHandler>("AuthHandler", 1, 0, "AuthHandler");
     qmlRegisterType<Device>("Device", 1, 0, "Device");

@@ -33,7 +33,10 @@ Rectangle {
             text: qsTr("Profile")
             icon.source: "qrc:/ui/assets/images/mineOn.png"
             display: AbstractButton.TextUnderIcon
-            onClicked: stackLayout.currentIndex = 2
+            onClicked: {
+
+                stackLayout.currentIndex = 2
+            }
         }
     }
 
@@ -47,23 +50,27 @@ Rectangle {
         Loader {
             source: "QuickStartPage.qml"
             visible: stackLayout.currentIndex === 0
-            onLoaded: item.activeChanged.connect(function () {
+            onLoaded: //item.activeChanged.connect(function () {
+            {
                 tabBar.currentIndex = 0
-            })
+            }
         }
         Loader {
             source: "DataPage.qml"
             visible: stackLayout.currentIndex === 1
-            onLoaded: item.activeChanged.connect(function () {
+            onLoaded: //item.activeChanged.connect(function () {
+            {
                 tabBar.currentIndex = 1
-            })
+            }
         }
         Loader {
             source: "ProfilePage.qml"
             visible: stackLayout.currentIndex === 2
-            onLoaded: item.activeChanged.connect(function () {
+            onLoaded: //item.activeChanged.connect(function () {
+            {
                 tabBar.currentIndex = 2
-            })
+                //authHandler.retriveProfile()
+            }
         }
     }
 }

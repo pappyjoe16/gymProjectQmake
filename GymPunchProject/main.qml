@@ -4,7 +4,6 @@ import QtQuick.Controls 2.15
 import "ui"
 import Pageswitcher 1.0
 import AuthHandler 1.0
-import BLEDeviceListModel 1.0
 import Base64format 1.0
 import Device 1.0
 
@@ -60,10 +59,6 @@ Window {
         id: authHandler
     }
 
-    BLEDeviceListModel {
-        id: bleManager
-    }
-
     Base64format {
         id: base64format
     }
@@ -115,6 +110,14 @@ Window {
     }
     SensorReadingPage {
         id: sensorReadingPage
+        visible: false
+    }
+    DataEntry {
+        id: dataEntryPage
+        visible: false
+    }
+    RoundSelectPage {
+        id: roundSelectPage
         visible: false
     }
 

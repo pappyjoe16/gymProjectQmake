@@ -1,13 +1,17 @@
 #include "authhandler.h"
-#include <QDebug>
-#include <QNetworkRequest>
-#include <QVariantMap>
-#include "qjsonarray.h"
-// #include <QSslKey>
-// #include <QSslSocket>
 #include <QCoreApplication>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QEventLoop>
+#include <QFile>
+#include <QJsonArray>
 #include <QJsonObject>
+#include <QNetworkRequest>
+#include <QTcpServer>
+#include <QTcpSocket>
 #include <QTimer>
+#include <QVariantMap>
+#include "qurlquery.h"
 
 AuthHandler::AuthHandler(QObject *parent)
     : QObject{parent}
@@ -146,10 +150,83 @@ void AuthHandler::firestoreReplyReadyRead()
     }
 }
 
-void AuthHandler::pictureReplyReadyRead()
+void AuthHandler::updateFirestoreReplyReadyRead()
 {
     m_networkReply = qobject_cast<QNetworkReply *>(sender());
 
+    if (m_networkReply) {
+        if (m_networkReply->error() == QNetworkReply::NoError) {
+            QByteArray response_data = m_networkReply->readAll();
+            //qDebug().noquote() << "Response from user profile:" << response_data;
+            emit userUpdated();
+        } else {
+            qDebug() << "Error from user profile:" << m_networkReply->errorString();
+        }
+        m_networkReply->deleteLater();
+        sender()->deleteLater();
+    }
+}
+
+void AuthHandler::profileReplyReadyRead()
+{
+    m_networkReply = qobject_cast<QNetworkReply *>(sender());
+
+    if (m_networkReply) {
+        if (m_networkReply->error() == QNetworkReply::NoError) {
+            QByteArray response_data = m_networkReply->readAll();
+            //qDebug().noquote() << "Response from user profile:" << response_data;
+            //QJsonDocument jsonDocument = QJsonDocument::fromJson(response_data);
+
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(response_data);
+            QJsonObject jsonObject = jsonDocument.object();
+
+            if (jsonObject["status"].toBool()) {
+                QJsonArray dataArray = jsonObject["data"].toArray();
+
+                foreach (const QJsonValue &value, dataArray) {
+                    QJsonObject dataObject = value.toObject();
+
+                    QString docId = dataObject["id"].toString();
+                    m_docId = docId;
+
+                    QJsonObject innerData = dataObject["data"].toObject();
+
+                    QString username = innerData["name"].toString();
+                    QString usergender = innerData["gender"].toString();
+                    QString userage = innerData["age"].toString();
+                    QString userheight = innerData["height"].toString();
+                    QString userweight = innerData["weight"].toString();
+                    QString userhandHabit = innerData["handHabit"].toString();
+                    QString userprofilePicture = innerData["profileUrl"].toString();
+
+                    m_username = username;
+                    m_usergender = usergender;
+                    m_userage = userage;
+                    m_userheight = userheight;
+                    m_userweight = userweight;
+                    m_userhandHabit = userhandHabit;
+                    m_userprofilePicture = userprofilePicture;
+                }
+            }
+            emit userRetrived(m_username,
+                              m_usergender,
+                              m_userage,
+                              m_userheight,
+                              m_userweight,
+                              m_userhandHabit,
+                              m_userprofilePicture);
+
+        } else {
+            qDebug() << "Error from user profile:" << m_networkReply->errorString();
+        }
+        m_networkReply->deleteLater();
+        sender()->deleteLater();
+    }
+}
+
+void AuthHandler::pictureReplyReadyRead()
+{
+    m_networkReply = qobject_cast<QNetworkReply *>(sender());
     if (m_networkReply) {
         if (m_networkReply->error() == QNetworkReply::NoError) {
             QByteArray response_data = m_networkReply->readAll();
@@ -162,7 +239,7 @@ void AuthHandler::pictureReplyReadyRead()
                 QString url = jsonObject["url"].toString();
                 m_url = url;
             }
-            qDebug() << "Picture URL main:" << m_url;
+            //qDebug() << "Picture URL main:" << m_url;
 
         } else {
             qDebug() << "Error from Picture:" << m_networkReply->errorString();
@@ -185,6 +262,22 @@ void AuthHandler::performPostRequest(const QString &endpoint,
         });
     } else if (action == "profilePicture") {
         connect(m_networkReply, &QNetworkReply::readyRead, this, [=]() { pictureReplyReadyRead(); });
+    } else if (action == "retriveProfile") {
+        connect(m_networkReply, &QNetworkReply::readyRead, this, [=]() { profileReplyReadyRead(); });
+    }
+}
+
+void AuthHandler::performPutRequest(const QString &endpoint,
+                                    const QJsonDocument &payload,
+                                    const QString &action)
+{
+    QNetworkRequest newRequest((QUrl(endpoint)));
+    newRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
+    m_networkReply = m_networkAccessManager->put(newRequest, payload.toJson());
+    if (action == "updateUserProfile") {
+        connect(m_networkReply, &QNetworkReply::readyRead, this, [=]() {
+            updateFirestoreReplyReadyRead();
+        });
     }
 }
 
@@ -252,3 +345,212 @@ void AuthHandler::addUserProfile(const QString &name,
 
     performPostRequest(addUserProfileEndPoint, profilePayloadDocument, QString("userProfile"));
 }
+
+void AuthHandler::retriveProfile()
+{
+    QString UserProfileEndPoint = "https://getquerieddocs-igqf34gr4q-uc.a.run.app";
+
+    QJsonObject payload;
+    payload["collection"] = "userProfiles";
+
+    QJsonArray whereArray;
+    QJsonObject whereObject;
+    whereObject["fieldPath"] = "uid";
+    whereObject["opStr"] = "==";
+    whereObject["value"] = m_uid;
+    whereArray.append(whereObject);
+
+    payload["where"] = whereArray;
+    payload["limit"] = 1;
+
+    QJsonDocument retrivePayloadDoc(payload);
+
+    performPostRequest(UserProfileEndPoint, retrivePayloadDoc, QString("retriveProfile"));
+}
+
+void AuthHandler::updateUserProfile(const QString &name,
+                                    const QString &gender,
+                                    const QString &age,
+                                    const QString &height,
+                                    const QString &weight,
+                                    const QString &handHabit,
+                                    const QString &profilePicture)
+{
+    QString updateUserProfileEndPoint = "https://updatedocument-igqf34gr4q-uc.a.run.app";
+    QString updateUserPictureEndPoint = "https://uploadfiletostorage-igqf34gr4q-uc.a.run.app";
+
+    if (!profilePicture.isEmpty()) {
+        QJsonObject profilePictureObject;
+        profilePictureObject["base64Data"] = profilePicture;
+        profilePictureObject["fileName"] = m_emailAddress + ".jpg";
+        profilePictureObject["uid"] = m_uid;
+
+        QJsonDocument picturePayloadDocument(profilePictureObject);
+
+        performPostRequest(updateUserPictureEndPoint,
+                           picturePayloadDocument,
+                           QString("profilePicture"));
+        while (m_url.isEmpty()) {
+            pictureReplyReadyRead();
+            QEventLoop loop;
+            QTimer::singleShot(200, &loop, SLOT(quit())); // 1000 milliseconds = 1 second
+            loop.exec();
+        }
+    }
+
+    QJsonObject profileObject;
+    profileObject["name"] = name;
+    profileObject["gender"] = gender;
+    profileObject["age"] = age;
+    profileObject["height"] = height;
+    profileObject["weight"] = weight;
+    profileObject["handHabit"] = handHabit;
+    if (!profilePicture.isEmpty()) {
+        profileObject["profileUrl"] = m_url;
+    }
+
+    QJsonObject profilePayloadObject;
+    profilePayloadObject["collection"] = "userProfiles";
+    profilePayloadObject["id"] = m_docId;
+    profilePayloadObject["data"] = profileObject;
+
+    QJsonDocument profilePayloadDocument(profilePayloadObject);
+
+    performPutRequest(updateUserProfileEndPoint,
+                      profilePayloadDocument,
+                      QString("updateUserProfile"));
+}
+
+// void AuthHandler::authenticateWithGoogle()
+// {
+//     // Construct the authorization URL with the correct redirect URI
+//     QString redirectUri = "http://localhost:3000";
+//     QString authUrl = constructGoogleAuthUrl(
+//         "981640700306-0r5qsvipvg358kgcsmbf72jngh9no21b.apps.googleusercontent.com",
+//         redirectUri,
+//         "profile email",
+//         "random_state_string");
+
+//     // Start the OAuth flow by opening the authorization URL in the default web browser
+//     QDesktopServices::openUrl(QUrl(authUrl));
+// }
+
+// QString AuthHandler::constructGoogleAuthUrl(const QString &clientId,
+//                                             const QString &redirectUri,
+//                                             const QString &scope,
+//                                             const QString &state)
+// {
+//     QUrl authUrl("https://accounts.google.com/o/oauth2/v2/auth");
+
+//     QUrlQuery query;
+//     query.addQueryItem("client_id", clientId);
+//     query.addQueryItem("redirect_uri", redirectUri);
+//     query.addQueryItem("response_type", "code");
+//     query.addQueryItem("scope", scope);
+//     if (!state.isEmpty()) {
+//         query.addQueryItem("state", state);
+//     }
+//     query.addQueryItem("access_type", "offline");
+//     query.addQueryItem("prompt", "consent");
+
+//     authUrl.setQuery(query);
+//     return authUrl.toString();
+// }
+// void AuthHandler::handleRedirect(const QUrl &url)
+// {
+//     QUrlQuery query(url.query());
+//     QString code = query.queryItemValue("code");
+
+//     if (!code.isEmpty()) {
+//         exchangeCodeForToken(code);
+//     }
+// }
+// void AuthHandler::exchangeCodeForToken(const QString &code)
+// {
+//     QUrl tokenUrl("https://oauth2.googleapis.com/token");
+//     QNetworkRequest request(tokenUrl);
+//     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+//     QUrlQuery params;
+//     params.addQueryItem("code", code);
+//     params.addQueryItem("client_id",
+//                         "981640700306-0r5qsvipvg358kgcsmbf72jngh9no21b.apps.googleusercontent.com");
+//     params.addQueryItem("client_secret", "YOUR_CLIENT_SECRET");
+//     params.addQueryItem("redirect_uri", "http://localhost:3000");
+//     params.addQueryItem("grant_type", "authorization_code");
+
+//     auto networkManager = new QNetworkAccessManager(this);
+//     connect(networkManager, &QNetworkAccessManager::finished, this, &AuthHandler::handleTokenReply);
+//     networkManager->post(request, params.toString(QUrl::FullyEncoded).toUtf8());
+// }
+
+// void AuthHandler::handleTokenReply(QNetworkReply *reply)
+// {
+//     if (reply->error() == QNetworkReply::NoError) {
+//         QByteArray response = reply->readAll();
+//         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+//         QJsonObject jsonObj = jsonDoc.object();
+//         m_accessToken = jsonObj["access_token"].toString();
+//         QString refreshToken = jsonObj["refresh_token"].toString();
+
+//         // Save tokens for future use
+//         saveTokens(m_accessToken, refreshToken);
+
+//         // Automatically sign in next time
+//         signInWithToken(m_accessToken);
+//     } else {
+//         qDebug() << "Error in token exchange: " << reply->errorString();
+//     }
+//     reply->deleteLater();
+// }
+// void AuthHandler::saveTokens(const QString &accessToken, const QString &refreshToken)
+// {
+//     QFile file("tokens.json");
+//     if (file.open(QIODevice::WriteOnly)) {
+//         QJsonObject jsonObj;
+//         jsonObj["access_token"] = accessToken;
+//         jsonObj["refresh_token"] = refreshToken;
+//         file.write(QJsonDocument(jsonObj).toJson());
+//         file.close();
+//     }
+// }
+
+// QJsonObject AuthHandler::loadTokens()
+// {
+//     QFile file("tokens.json");
+//     if (file.open(QIODevice::ReadOnly)) {
+//         QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll());
+//         file.close();
+//         return jsonDoc.object();
+//     }
+//     return QJsonObject();
+// }
+// void AuthHandler::signInWithToken(const QString &accessToken)
+// {
+//     QNetworkRequest request(QUrl("https://www.googleapis.com/oauth2/v1/userinfo?alt=json"));
+//     request.setRawHeader("Authorization", ("Bearer " + accessToken).toUtf8());
+
+//     auto networkManager = new QNetworkAccessManager(this);
+//     connect(networkManager,
+//             &QNetworkAccessManager::finished,
+//             this,
+//             &AuthHandler::handleUserInfoReply);
+//     networkManager->get(request);
+// }
+
+// void AuthHandler::handleUserInfoReply(QNetworkReply *reply)
+// {
+//     if (reply->error() == QNetworkReply::NoError) {
+//         QByteArray response = reply->readAll();
+//         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+//         QJsonObject jsonObj = jsonDoc.object();
+//         QString userName = jsonObj["name"].toString();
+//         QString userEmail = jsonObj["email"].toString();
+
+//         qDebug() << "User Name: " << userName;
+//         qDebug() << "User Email: " << userEmail;
+//     } else {
+//         qDebug() << "Error in fetching user info: " << reply->errorString();
+//     }
+//     reply->deleteLater();
+// }

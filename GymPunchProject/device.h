@@ -20,18 +20,18 @@ public:
     explicit Device(QObject *parent = nullptr);
     QVariant name();
     ~Device();
+    Q_INVOKABLE void startDeviceDiscovery();
+    Q_INVOKABLE void connectDevice(const QString &address);
 
 signals:
-    void sendAddressHeart(QVariant, QVariant);
-    void sendAddressRight(QVariant, QVariant);
     void sendAddressLeft(QVariant, QVariant);
+    void sendAddressRight(QVariant, QVariant);
+    void sendAddressHeart(QVariant, QVariant);
     void measuringChanged(QVariant);
     void aliveChanged();
     void statsChanged();
 
 public slots:
-    void startDeviceDiscovery();
-    void connectDevice(const QString &address);
 
 private slots:
     void addDevice(const QBluetoothDeviceInfo &);

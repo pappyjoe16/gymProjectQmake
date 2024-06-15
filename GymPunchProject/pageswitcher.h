@@ -9,8 +9,7 @@ class Pageswitcher : public QObject
 public:
     explicit Pageswitcher(QObject *parent = nullptr);
     ~Pageswitcher();
-    Q_INVOKABLE void pageLoader(QString page);
-
+    Q_INVOKABLE void pageLoader(const QString page);
 
 signals:
     void switchToLoginPage();
@@ -22,8 +21,8 @@ signals:
     void switchBackToConnectPage();
     void switchToQuickstart();
     void switchToBLEConnect();
+    void switchBackToHeartRateDevice();
     void switchToHeartRateDevice();
-    void switchToHeartRateDevicePage();
     void switchToSensorReadingPage();
 
 public slots:

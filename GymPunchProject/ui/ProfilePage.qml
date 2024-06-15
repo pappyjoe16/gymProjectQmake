@@ -1,98 +1,511 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.LocalStorage 2.0
 
 Rectangle {
-    id: rectangle1
+    id: backgroundImage
     width: 410
     height: 740
     anchors.fill: parent
     anchors.rightMargin: 0
     anchors.bottomMargin: 0
+    gradient: Gradient {
+        GradientStop {
+            position: 0
+            color: "#0a0505"
+        }
+
+        GradientStop {
+            position: 1
+            color: "#000000"
+        }
+        orientation: Gradient.Vertical
+    }
     anchors.leftMargin: 0
     anchors.topMargin: 0
+    layer.enabled: false
+    opacity: 1
+    z: -1
 
-    Text {
-        text: "Hello !!! Welcome to Profile Page. \n  I am still work in progress" // Display the BLE name
-        anchors.centerIn: parent
-        anchors.left: parent.left
-        leftPadding: 10
-        font.pixelSize: 20
-        color: "black"
-    }
-
-    TabBar {
-        id: tabBar
-        y: 299
-        height: 57
+    Label {
+        id: pageTitleLabel
+        height: 37
+        color: "#ffffff"
+        text: qsTr("My Profile")
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+        anchors.leftMargin: 98
+        anchors.rightMargin: 98
+        anchors.topMargin: 12
+        horizontalAlignment: Text.AlignHCenter
+        font.bold: true
+        font.pointSize: 18
+        font.italic: true
+    }
+
+    Column {
+        id: column1
+        height: 130
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: pageTitleLabel.bottom
         anchors.leftMargin: 0
         anchors.rightMargin: 0
-        anchors.bottomMargin: 0
+        anchors.topMargin: 10
+        spacing: 15
 
-        background: Rectangle {
-            color: "#a3a375"
-        }
-
-        TabButton {
-            id: trainTab
-            text: qsTr("Train")
-            //icon.color: "#ffffff"
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: -8
-            icon.source: "qrc:/ui/assets/images/boxing.png"
-            display: AbstractButton.TextUnderIcon
-            //height: parent.height
-            checked: false
+        MouseArea {
+            anchors.fill: parent
             onClicked: {
-                quickStartPage.visible = true
-                dataPage.visible = false
-                profilePage.visible = false
-                trainTab.checked = true
-                profileTab.checked = false
-                dataTab.checked = false
+                roundSelectPage.visible = false
+                dataEntryPage.visible = true
             }
         }
-        TabButton {
-            id: dataTab
-            text: qsTr("Data")
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: -8
-            // icon.color: "#ffffff"
-            icon.source: "qrc:/ui/assets/images/dataOn.png"
-            display: AbstractButton.TextUnderIcon
-            checked: false
 
-            //height: parent.height
-            onClicked: {
-                dataPage.visible = true
-                quickStartPage.visible = false
-                profilePage.visible = false
-                trainTab.checked = false
-                profileTab.checked = false
-                dataTab.checked = true
+        Rectangle {
+            id: profileSummary
+            anchors.fill: parent
+            gradient: Gradient {
+                GradientStop {
+                    position: 0
+                    color: "#2b2727"
+                }
+
+                GradientStop {
+                    position: 1
+                    color: "#000000"
+                }
+                orientation: Gradient.Vertical
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    roundSelectPage.visible = false
+                    dataEntryPage.visible = true
+                }
+            }
+
+            Image {
+                id: userImage
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 8
+                anchors.rightMargin: 279
+                anchors.topMargin: 5
+                anchors.bottomMargin: 9
+                source: "qrc:/ui/assets/images/user.png"
+                sourceSize.height: userImage.height
+                sourceSize.width: userImage.width
+                fillMode: Image.PreserveAspectFit
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
+            }
+            Label {
+                id: nameLabel
+                height: 36
+                color: "#ffffff"
+                text: qsTr("")
+                anchors.left: userImage.right
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.leftMargin: 12
+                anchors.rightMargin: 8
+                anchors.topMargin: 14
+                font.pointSize: 20
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
+            }
+
+            Label {
+                id: heightLabel
+                y: 92
+                width: 62
+                height: 24
+                color: "#ffffff"
+                text: qsTr("")
+                anchors.left: userImage.right
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 9
+                anchors.bottomMargin: 14
+                font.italic: false
+                font.pointSize: 17
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
+            }
+
+            Label {
+                id: weightLabel
+                y: 93
+                width: 62
+                height: 24
+                color: "#ffffff"
+                text: qsTr("")
+                anchors.left: heightLabel.right
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 12
+                anchors.bottomMargin: 13
+                font.pointSize: 17
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
+            }
+
+            Label {
+                id: handedlabel
+                y: 94
+                height: 24
+                color: "#ffffff"
+                text: qsTr("")
+                anchors.left: weightLabel.right
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 8
+                anchors.rightMargin: 8
+                anchors.bottomMargin: 12
+                font.pointSize: 17
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
+            }
+
+            Image {
+                id: image1
+                x: 352
+                y: -1
+                width: 39
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 19
+                anchors.topMargin: 51
+                anchors.bottomMargin: 42
+                source: "qrc:/ui/assets/images/next.png"
+                fillMode: Image.PreserveAspectFit
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
             }
         }
-        TabButton {
-            id: profileTab
-            text: qsTr("Profile")
-            //icon.color: "#ffffff"
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: -8
-            icon.source: "qrc:/ui/assets/images/mineOn.png"
-            display: AbstractButton.TextUnderIcon
-            checked: true
 
-            //height: parent.height
-            onClicked: {
-                profilePage.visible = true
-                quickStartPage.visible = false
-                dataPage.visible = false
-                trainTab.checked = false
-                profileTab.checked = true
-                dataTab.checked = false
+        Column {
+            id: column2
+            height: 280
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: profileSummary.bottom
+            //anchors.fill: parent
+            anchors.leftMargin: 0
+            anchors.rightMargin: 0
+            anchors.topMargin: 26
+            spacing: 2
+
+            Rectangle {
+                id: reminderCol
+                color: "#151313"
+                height: parent.height / 5
+                width: parent.width
+
+                MouseArea {}
+
+                Label {
+                    id: labelReminder
+                    x: 13
+                    width: 198
+                    color: "#ffffff"
+                    text: qsTr("Start Reminder")
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 28
+                    anchors.topMargin: 8
+                    anchors.bottomMargin: 12
+                    font.pointSize: 20
+
+                    MouseArea {}
+                }
+
+                Image {
+                    id: image2
+                    x: 352
+                    width: 39
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 19
+                    anchors.topMargin: 11
+                    anchors.bottomMargin: 9
+                    source: "qrc:/ui/assets/images/next.png"
+                    fillMode: Image.PreserveAspectFit
+
+                    MouseArea {}
+                }
             }
+            Rectangle {
+                id: dataSyncCol
+                color: "#151313"
+                height: parent.height / 5
+                width: parent.width
+
+                MouseArea {}
+
+                Label {
+                    id: dataSyncLabel
+                    x: 13
+                    width: 259
+                    color: "#ffffff"
+                    text: qsTr("Data synchronization")
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 28
+                    anchors.topMargin: 8
+                    anchors.bottomMargin: 12
+                    font.pointSize: 20
+
+                    MouseArea {}
+                }
+
+                Image {
+                    id: dataSyncImage
+                    x: 352
+                    width: 39
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 19
+                    anchors.topMargin: 11
+                    anchors.bottomMargin: 9
+                    source: "qrc:/ui/assets/images/next.png"
+                    fillMode: Image.PreserveAspectFit
+
+                    MouseArea {}
+                }
+            }
+            Rectangle {
+                id: feedbackCol
+                color: "#151313"
+                height: parent.height / 5
+                width: parent.width
+
+                MouseArea {}
+
+                Label {
+                    id: feedbackLabel
+                    x: 13
+                    width: 259
+                    color: "#ffffff"
+                    text: qsTr("Feedback")
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 28
+                    anchors.topMargin: 8
+                    anchors.bottomMargin: 12
+                    font.pointSize: 20
+
+                    MouseArea {}
+                }
+
+                Image {
+                    id: feedbackImage
+                    x: 352
+                    width: 39
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 19
+                    anchors.topMargin: 11
+                    anchors.bottomMargin: 9
+                    source: "qrc:/ui/assets/images/next.png"
+                    fillMode: Image.PreserveAspectFit
+
+                    MouseArea {}
+                }
+            }
+            Rectangle {
+                id: helpCol
+                color: "#151313"
+                height: parent.height / 5
+                width: parent.width
+
+                MouseArea {}
+
+                Label {
+                    id: helpLabel
+                    x: 13
+                    width: 259
+                    color: "#ffffff"
+                    text: qsTr("Help")
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 28
+                    anchors.topMargin: 8
+                    anchors.bottomMargin: 12
+                    font.pointSize: 20
+
+                    MouseArea {}
+                }
+
+                Image {
+                    id: helpImage
+                    x: 352
+                    width: 39
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 19
+                    anchors.topMargin: 11
+                    anchors.bottomMargin: 9
+                    source: "qrc:/ui/assets/images/next.png"
+                    fillMode: Image.PreserveAspectFit
+
+                    MouseArea {}
+                }
+            }
+            Rectangle {
+                id: aboutCol
+                color: "#151313"
+                height: parent.height / 5
+                width: parent.width
+
+                Label {
+                    id: aboutLabel
+                    x: 13
+                    width: 259
+                    color: "#ffffff"
+                    text: qsTr("About")
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 28
+                    anchors.topMargin: 8
+                    anchors.bottomMargin: 12
+                    font.pointSize: 20
+
+                    MouseArea {}
+                }
+
+                Image {
+                    id: aboutImage
+                    x: 352
+                    width: 39
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 19
+                    anchors.topMargin: 11
+                    anchors.bottomMargin: 9
+                    source: "qrc:/ui/assets/images/next.png"
+                    fillMode: Image.PreserveAspectFit
+
+                    MouseArea {}
+                }
+            }
+        }
+        Column {
+            id: column3
+            height: 280
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: column2.bottom
+            //anchors.fill: parent
+            anchors.leftMargin: 0
+            anchors.rightMargin: 0
+            anchors.topMargin: 24
+            spacing: 2
+
+            Rectangle {
+                id: signOutCol
+                color: "#151313"
+                height: parent.height / 5
+                width: parent.width
+
+                MouseArea {}
+
+                Label {
+                    id: signOutLabel
+                    x: 13
+                    width: 259
+                    color: "#ffffff"
+                    text: qsTr("Sign out")
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 28
+                    anchors.topMargin: 8
+                    anchors.bottomMargin: 12
+                    font.pointSize: 20
+
+                    MouseArea {}
+                }
+
+                Image {
+                    id: signOutImage
+                    x: 352
+                    width: 39
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 19
+                    anchors.topMargin: 11
+                    anchors.bottomMargin: 9
+                    source: "qrc:/ui/assets/images/next.png"
+                    fillMode: Image.PreserveAspectFit
+
+                    MouseArea {}
+                }
+            }
+        }
+    }
+    Connections {
+        target: authHandler
+        function onUserRetrived(username, usergender, userage, userheight, userweight, userhandHabit, userprofilePicture) {
+            // console.log("User profile received:", username, usergender,
+            //             userage, userheight, userweight, userhandHabit,
+            //             userprofilePicture)
+            userImage.source = userprofilePicture
+            nameLabel.text = username
+            heightLabel.text = userheight
+            weightLabel.text = userweight
+            handedlabel.text = userhandHabit
         }
     }
 }

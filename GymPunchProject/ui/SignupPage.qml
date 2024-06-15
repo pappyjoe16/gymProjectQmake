@@ -100,12 +100,12 @@ Image {
         font.italic: false
         font.pointSize: 15
         highlighted: true
-        anchors.topMargin: 420
+        anchors.topMargin: -22
 
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: privacyPolicy.bottom
             rightMargin: 50
             leftMargin: 50
         }
@@ -120,7 +120,7 @@ Image {
             } else {
                 var encryptedPassword = authHandler.encryptPassword(
                             passwordInput.text)
-                authHandler.setAPIKey("AIzaSyAiBfude-2sHoh7qPj_lVxhD5xSxtfSozk")
+                authHandler.setAPIKey("AIzaSyAmzWxVSGaolPUToZiVCdB5oo4Ffl5Afhs")
                 authHandler.signUserUp(emailAddress.text, encryptedPassword)
                 saveLoginDetails(emailAddress.text, encryptedPassword)
             }
@@ -141,11 +141,11 @@ Image {
         echoMode: TextInput.Normal
         placeholderText: qsTr("Email Address")
         color: "#330000"
-        anchors.topMargin: 190
+        anchors.topMargin: 29
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: emailLoginLabel.bottom
             rightMargin: 39
             leftMargin: 39
         }
@@ -180,11 +180,11 @@ Image {
         placeholderText: qsTr("Password")
         echoMode: TextInput.Password
 
-        anchors.topMargin: 260
+        anchors.topMargin: 16
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: emailAddress.bottom
             rightMargin: 39
             leftMargin: 39
         }
@@ -245,11 +245,11 @@ Image {
         font.italic: true
         font.family: "Times New Roman"
 
-        anchors.topMargin: 315
+        anchors.topMargin: 1
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: passwordInput.bottom
             rightMargin: 89
             leftMargin: 89
         }
@@ -269,12 +269,12 @@ Image {
         font.underline: true
         font.family: "Times New Roman"
         //flat: true      use when change to button
-        anchors.topMargin: 380
+        anchors.topMargin: 80
         //opacity: 1 //    use when change to button
         anchors {
             left: parent.left
             right: parent.right
-            top: parent.top
+            top: passwordLabel.bottom
             rightMargin: 52
             leftMargin: 52
         }
@@ -333,5 +333,81 @@ Image {
                 signupPage.visible = false
             }
         }
+    }
+
+    Button {
+        id: googleButton
+        x: -7
+        y: 383
+        height: 60
+        text: name.text
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: alternativeLabel.bottom
+        anchors.leftMargin: 70
+        anchors.rightMargin: 70
+        anchors.topMargin: 12
+        highlighted: false
+        icon.color: "#00885757"
+        icon.source: "qrc:/ui/assets/images/google.png"
+
+        onClicked: authHandler.authenticateWithGoogle()
+        Text {
+            id: name
+            text: qsTr("Continue with Google")
+            //horizontalAlignment: Text.AlignHCenter
+            //verticalAlignment: Text.AlignVCenter
+            font.italic: false
+            font.family: "Tahoma"
+            font.bold: true
+            font.pointSize: 12
+            color: "red"
+            visible: false
+        }
+    }
+
+    Label {
+        id: alternativeLabel
+        x: 196
+        y: 153
+        width: 144
+        height: 26
+        color: "#ffffff"
+        text: qsTr("Alternative login")
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: signupbutton.bottom
+        anchors.leftMargin: 124
+        anchors.rightMargin: 124
+        anchors.topMargin: 17
+        horizontalAlignment: Text.AlignHCenter
+        layer.mipmap: true
+        font.pointSize: 15
+        font.italic: true
+        font.family: "Times New Roman"
+    }
+
+    Rectangle {
+        id: line1
+        height: 2
+        color: "white"
+        anchors.left: parent.left
+        anchors.right: alternativeLabel.left
+        anchors.top: signupbutton.bottom
+        anchors.leftMargin: 0
+        anchors.rightMargin: -1
+        anchors.topMargin: 28
+    }
+
+    Rectangle {
+        id: line2
+        height: 2
+        color: "#ffffff"
+        anchors.left: alternativeLabel.right
+        anchors.right: parent.right
+        anchors.top: signupbutton.bottom
+        anchors.leftMargin: -3
+        anchors.rightMargin: 2
+        anchors.topMargin: 29
     }
 }

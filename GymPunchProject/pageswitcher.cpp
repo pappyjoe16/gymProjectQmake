@@ -14,7 +14,7 @@ Pageswitcher::~Pageswitcher()
      qDebug() << " I am deconstructed";
 }
 
-void Pageswitcher::pageLoader(QString page)
+void Pageswitcher::pageLoader(const QString page)
 {
     if (page == "login"){
         emit switchToLoginPage();
@@ -35,10 +35,10 @@ void Pageswitcher::pageLoader(QString page)
     } else if (page == "backToBLEConnect") {
         emit switchToBLEConnect();
     } else if (page == "backToHeartRateDevice") {
+        emit switchBackToHeartRateDevice();
+    } else if (page == "ToHeartRateDevice") {
         emit switchToHeartRateDevice();
-    } else if (page == "heartRateDevice") {
-        emit switchToHeartRateDevicePage();
-    } else if (page == "sensorReadingPage") {
+    } else if (page == "ToSensorReadingPage") {
         emit switchToSensorReadingPage();
     }
 }

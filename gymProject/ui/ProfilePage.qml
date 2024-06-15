@@ -50,16 +50,22 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: pageTitleLabel.bottom
-        //anchors.fill: parent
         anchors.leftMargin: 0
         anchors.rightMargin: 0
         anchors.topMargin: 10
         spacing: 15
 
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                roundSelectPage.visible = false
+                dataEntryPage.visible = true
+            }
+        }
+
         Rectangle {
             id: profileSummary
             anchors.fill: parent
-            anchors.topMargin: 0
             gradient: Gradient {
                 GradientStop {
                     position: 0
@@ -73,10 +79,16 @@ Rectangle {
                 orientation: Gradient.Vertical
             }
 
-            MouseArea {}
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    roundSelectPage.visible = false
+                    dataEntryPage.visible = true
+                }
+            }
 
             Image {
-                id: image
+                id: userImage
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
@@ -86,16 +98,24 @@ Rectangle {
                 anchors.topMargin: 5
                 anchors.bottomMargin: 9
                 source: "qrc:/ui/assets/images/user.png"
+                sourceSize.height: userImage.height
+                sourceSize.width: userImage.width
                 fillMode: Image.PreserveAspectFit
 
-                MouseArea {}
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
             }
             Label {
-                id: label
+                id: nameLabel
                 height: 36
                 color: "#ffffff"
-                text: qsTr("Joseph Akinboyede")
-                anchors.left: image.right
+                text: qsTr("")
+                anchors.left: userImage.right
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.leftMargin: 12
@@ -103,49 +123,67 @@ Rectangle {
                 anchors.topMargin: 14
                 font.pointSize: 20
 
-                MouseArea {}
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
             }
 
             Label {
-                id: label1
+                id: heightLabel
                 y: 92
                 width: 62
                 height: 24
                 color: "#ffffff"
-                text: qsTr("200cm")
-                anchors.left: image.right
+                text: qsTr("")
+                anchors.left: userImage.right
                 anchors.bottom: parent.bottom
                 anchors.leftMargin: 9
                 anchors.bottomMargin: 14
                 font.italic: false
                 font.pointSize: 17
 
-                MouseArea {}
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
             }
 
             Label {
-                id: label2
+                id: weightLabel
                 y: 93
                 width: 62
                 height: 24
                 color: "#ffffff"
-                text: qsTr("150kg")
-                anchors.left: label1.right
+                text: qsTr("")
+                anchors.left: heightLabel.right
                 anchors.bottom: parent.bottom
                 anchors.leftMargin: 12
                 anchors.bottomMargin: 13
                 font.pointSize: 17
 
-                MouseArea {}
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
             }
 
             Label {
-                id: label3
+                id: handedlabel
                 y: 94
                 height: 24
                 color: "#ffffff"
-                text: qsTr("Right handed")
-                anchors.left: label2.right
+                text: qsTr("")
+                anchors.left: weightLabel.right
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.leftMargin: 8
@@ -153,7 +191,13 @@ Rectangle {
                 anchors.bottomMargin: 12
                 font.pointSize: 17
 
-                MouseArea {}
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
             }
 
             Image {
@@ -170,7 +214,13 @@ Rectangle {
                 source: "qrc:/ui/assets/images/next.png"
                 fillMode: Image.PreserveAspectFit
 
-                MouseArea {}
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        roundSelectPage.visible = false
+                        dataEntryPage.visible = true
+                    }
+                }
             }
         }
 
@@ -443,6 +493,19 @@ Rectangle {
                     MouseArea {}
                 }
             }
+        }
+    }
+    Connections {
+        target: authHandler
+        function onUserRetrived(username, usergender, userage, userheight, userweight, userhandHabit, userprofilePicture) {
+            // console.log("User profile received:", username, usergender,
+            //             userage, userheight, userweight, userhandHabit,
+            //             userprofilePicture)
+            userImage.source = userprofilePicture
+            nameLabel.text = username
+            heightLabel.text = userheight
+            weightLabel.text = userweight
+            handedlabel.text = userhandHabit
         }
     }
 }

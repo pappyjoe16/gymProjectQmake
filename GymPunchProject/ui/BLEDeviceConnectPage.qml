@@ -138,11 +138,26 @@ Rectangle {
                 }
             }
 
-            function addBleDeviceLeft(bleName, bleAddress) {
-                bleModelLeft.append({
+            function addBleDevicLeft(bleName, bleAddress) {
+                // Check if the bleAddress already exists in the model
+                var addressExists = false
+                for (var i = 0; i < bleModelLeft.count; ++i) {
+                    if (bleModelLeft.get(i).bleAddress === bleAddress) {
+                        addressExists = true
+                        break
+                    }
+                }
+
+                // If bleAddress doesn't exist, append the new device
+                if (!addressExists) {
+                    bleModelLeft.append({
                                         "bleName": bleName,
                                         "bleAddress": bleAddress
                                     })
+                } else {
+                    // Handle the case when the address already exists (optional)
+                    console.log("Address already exists: " + bleAddress)
+                }
             }
 
             ListModel {
@@ -210,7 +225,7 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            //deviceConnect.connectDevice(bleAddress)
+                            //device.connectDevice(bleAddress)
                             console.log(bleName + ": " + bleAddress)
                         }
                     }
@@ -234,11 +249,26 @@ Rectangle {
                 }
             }
 
-            function addBleDeviceRight(bleName, bleAddress) {
-                bleModelRight.append({
-                                         "bleName": bleName,
-                                         "bleAddress": bleAddress
-                                     })
+            function addBleDevicRight(bleName, bleAddress) {
+                // Check if the bleAddress already exists in the model
+                var addressExists = false
+                for (var i = 0; i < bleModelRight.count; ++i) {
+                    if (bleModelRight.get(i).bleAddress === bleAddress) {
+                        addressExists = true
+                        break
+                    }
+                }
+
+                // If bleAddress doesn't exist, append the new device
+                if (!addressExists) {
+                    bleModelRight.append({
+                                        "bleName": bleName,
+                                        "bleAddress": bleAddress
+                                    })
+                } else {
+                    // Handle the case when the address already exists (optional)
+                    console.log("Address already exists: " + bleAddress)
+                }
             }
 
             ListModel {
@@ -261,7 +291,8 @@ Rectangle {
         font.pointSize: 16
         highlighted: true
         onClicked: {
-            onClicked: pageloader.pageLoader("heartRateDevice")
+            pageloader.pageLoader("ToHeartRateDevice")
+
         }
     }
 
@@ -350,14 +381,14 @@ Rectangle {
     Connections {
         target: pageloader
         function onSwitchToQuickstart() {
-            quickStartPage.visible = true
+            roundSelectPage.visible = true
             deviceConnectPage.visible = false
         }
         function onSwitchToHelpPage() {
             helpPage.visible = true
             deviceConnectPage.visible = false
         }
-        function onSwitchToHeartRateDevicePage() {
+        function onSwitchToHeartRateDevice() {
             deviceConnectPage.visible = false
             heartRateDevicePage.visible = true
             device.startDeviceDiscovery()
@@ -369,17 +400,13 @@ Rectangle {
         function onSendAddressLeft(bleName, bleAddress) {
             leftViewContainer.visible = true
             //console.log(bleName + ": " + bleAddress)
-            leftViewContainer.addBleDeviceLeft(bleName, bleAddress)
+            leftViewContainer.addBleDevicLeft(bleName, bleAddress)
         }
         function onSendAddressRight(bleName, bleAddress) {
             rightViewContainer.visible = true
             //console.log(bleName + ": " + bleAddress)
-            rightViewContainer.addBleDeviceRight(bleName, bleAddress)
+            rightViewContainer.addBleDevicRight(bleName, bleAddress)
         }
 
-        // function onMeasuringChanged(hrVal) {
-        //     console.log("HR Value:" + hrVal)
-        //     // hrValue.text = "HrValue: " + hrVal
-        // }
     }
 }

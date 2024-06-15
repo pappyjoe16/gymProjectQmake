@@ -61,7 +61,7 @@ Rectangle {
 
             // Start the timer when the button is clicked
             timer.start()
-            rectangle.startButtonClicked = true
+            startButtonClicked = true
         }
     }
 
@@ -298,11 +298,11 @@ Rectangle {
             if (pauseButton.text === "Pause") {
                 timer.running = false
                 pauseButton.text = "Resume"
-                rectangle.startButtonClicked = false
+                startButtonClicked = false
             } else {
                 timer.running = true
                 pauseButton.text = "Pause"
-                rectangle.startButtonClicked = true
+                startButtonClicked = true
             }
         }
     }
@@ -328,7 +328,7 @@ Rectangle {
 
             // Start the timer when the button is clicked
             timer.stop()
-            rectangle.elapsedSeconds = 0
+            elapsedSeconds = 0
             timerLabel.text = "00:00:00"
             startButtonClicked = false
         }
@@ -341,9 +341,9 @@ Rectangle {
 
         onTriggered: {
             // Increment the elapsed time
-            rectangle.elapsedSeconds++
+            elapsedSeconds++
             // Update the label text with the formatted elapsed time
-            timerLabel.text = formatTime(rectangle.elapsedSeconds)
+            timerLabel.text = formatTime(elapsedSeconds)
         }
     }
 
@@ -477,7 +477,7 @@ Rectangle {
 
     Connections {
         target: pageloader
-        function onSwitchToHeartRateDevice() {
+        function onSwitchBackToHeartRateDevice() {
             heartRateDevicePage.visible = true
             sensorReadingPage.visible = false
         }
