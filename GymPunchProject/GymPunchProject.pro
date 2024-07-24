@@ -11,14 +11,13 @@ CONFIG += c++17
 TEMPLATE = app
 
 SOURCES += \
-    boxingdata.cpp \
     device.cpp \
     deviceinfo.cpp \
-    #googlesso.cpp \
     main.cpp \
     pageswitcher.cpp \
     authhandler.cpp \
     base64format.cpp
+    $$PWD/android/src/JavaClass.java
 
 
 RESOURCES += qml.qrc
@@ -35,14 +34,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    boxingdata.h \
     device.h \
     deviceinfo.h \
-    #googlesso.h \
     pageswitcher.h \
     authhandler.h \
     base64format.h \
-
 
 ANDROID {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
@@ -51,7 +47,7 @@ ANDROID {
 
 ANDROID_EXTRA_LIBS += \
     $$PWD/ui/assets/android_openssl-master/ssl_3/arm64-v8a/libcrypto_3.so \
-    $$PWD/ui/assets/android_openssl-master/ssl_3/arm64-v8a/libssl_3.so
+    $$PWD/ui/assets/android_openssl-master/ssl_3/arm64-v8a/libssl_3.so \
 
 macx {
     CONFIG += macx_bundle
@@ -63,10 +59,20 @@ win32 {
     CONFIG += win32
 }
 
-OTHER_FILES += \
-    android/AndroidManifest.xml
+contains(ANDROID_TARGET_ARCH,arm64-v8a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
+}
 
-# contains(ANDROID_TARGET_ARCH,arm64-v8a) {
-#     ANDROID_PACKAGE_SOURCE_DIR = \
-#         $$PWD/android
-# }
+OTHER_FILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle.properties \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew \
+    android/gradlew.bat \
+    android/libs/fitblekit_3132.aar \
+    android/res/values/libs.xml \
+    android/res/xml/qtprovider_paths.xml \
+    android/src/JavaClass.java

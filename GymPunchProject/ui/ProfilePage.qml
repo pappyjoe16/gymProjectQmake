@@ -1,28 +1,24 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.LocalStorage 2.0
+import QtQuick.Layouts 2.15
 
 Rectangle {
     id: backgroundImage
     width: 410
     height: 740
     anchors.fill: parent
-    anchors.rightMargin: 0
-    anchors.bottomMargin: 0
     gradient: Gradient {
         GradientStop {
             position: 0
             color: "#0a0505"
         }
-
         GradientStop {
             position: 1
             color: "#000000"
         }
         orientation: Gradient.Vertical
     }
-    anchors.leftMargin: 0
-    anchors.topMargin: 0
     layer.enabled: false
     opacity: 1
     z: -1
@@ -32,46 +28,33 @@ Rectangle {
         height: 37
         color: "#ffffff"
         text: qsTr("My Profile")
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.leftMargin: 98
-        anchors.rightMargin: 98
         anchors.topMargin: 12
-        horizontalAlignment: Text.AlignHCenter
         font.bold: true
         font.pointSize: 18
         font.italic: true
     }
 
-    Column {
-        id: column1
-        height: 130
+    RowLayout {
+        id: profileSummary
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: pageTitleLabel.bottom
         anchors.leftMargin: 0
         anchors.rightMargin: 0
         anchors.topMargin: 10
-        spacing: 15
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                roundSelectPage.visible = false
-                dataEntryPage.visible = true
-            }
-        }
 
         Rectangle {
-            id: profileSummary
-            anchors.fill: parent
+            id: profilePicture
+            Layout.preferredHeight: 120
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             gradient: Gradient {
                 GradientStop {
                     position: 0
                     color: "#2b2727"
                 }
-
                 GradientStop {
                     position: 1
                     color: "#000000"
@@ -87,425 +70,377 @@ Rectangle {
                 }
             }
 
-            Image {
-                id: userImage
+            RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                anchors.leftMargin: 8
-                anchors.rightMargin: 279
-                anchors.topMargin: 5
-                anchors.bottomMargin: 9
-                source: "qrc:/ui/assets/images/user.png"
-                sourceSize.height: userImage.height
-                sourceSize.width: userImage.width
-                fillMode: Image.PreserveAspectFit
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                spacing: 5
+                Image {
+                    id: userImage
+                    source: "qrc:/ui/assets/images/user.png"
+                    Layout.fillHeight: true
+                    Layout.minimumHeight: parent.height / 4
+                    Layout.minimumWidth: parent.width / 4
+                    sourceSize.height: userImage.height
+                    sourceSize.width: userImage.width
+                    fillMode: Image.PreserveAspectFit
+                }
+                ColumnLayout {
+                    id: column
+                    spacing: 5
+                    Layout.minimumHeight: parent.height
+                    Layout.minimumWidth: parent.width / 4
+                    Layout.fillWidth: true
+                    Label {
+                        id: nameLabel
+                        color: "#ffffff"
+                        text: qsTr("name")
+                        Layout.fillWidth: true
+                        font.pointSize: 20
+                    }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        roundSelectPage.visible = false
-                        dataEntryPage.visible = true
+                    Row {
+                        //anchors.bottom: parent.bottom
+                        //anchors.bottomMargin: 0
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                        Layout.fillWidth: false
+                        spacing: 10
+
+                        Label {
+                            id: heightLabel
+                            color: "#ffffff"
+                            text: qsTr("height")
+                            font.pointSize: 17
+                        }
+                        Label {
+                            id: weightLabel
+                            color: "#ffffff"
+                            text: qsTr("weight")
+                            font.pointSize: 17
+                        }
+                        Label {
+                            id: handedlabel
+                            color: "#ffffff"
+                            text: qsTr("handed")
+                            font.pointSize: 17
+                        }
                     }
                 }
-            }
-            Label {
-                id: nameLabel
-                height: 36
-                color: "#ffffff"
-                text: qsTr("")
-                anchors.left: userImage.right
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.leftMargin: 12
-                anchors.rightMargin: 8
-                anchors.topMargin: 14
-                font.pointSize: 20
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        roundSelectPage.visible = false
-                        dataEntryPage.visible = true
-                    }
-                }
-            }
-
-            Label {
-                id: heightLabel
-                y: 92
-                width: 62
-                height: 24
-                color: "#ffffff"
-                text: qsTr("")
-                anchors.left: userImage.right
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: 9
-                anchors.bottomMargin: 14
-                font.italic: false
-                font.pointSize: 17
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        roundSelectPage.visible = false
-                        dataEntryPage.visible = true
-                    }
-                }
-            }
-
-            Label {
-                id: weightLabel
-                y: 93
-                width: 62
-                height: 24
-                color: "#ffffff"
-                text: qsTr("")
-                anchors.left: heightLabel.right
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: 12
-                anchors.bottomMargin: 13
-                font.pointSize: 17
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        roundSelectPage.visible = false
-                        dataEntryPage.visible = true
-                    }
-                }
-            }
-
-            Label {
-                id: handedlabel
-                y: 94
-                height: 24
-                color: "#ffffff"
-                text: qsTr("")
-                anchors.left: weightLabel.right
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: 8
-                anchors.rightMargin: 8
-                anchors.bottomMargin: 12
-                font.pointSize: 17
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        roundSelectPage.visible = false
-                        dataEntryPage.visible = true
-                    }
-                }
-            }
-
-            Image {
-                id: image1
-                x: 352
-                y: -1
-                width: 39
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.rightMargin: 19
-                anchors.topMargin: 51
-                anchors.bottomMargin: 42
-                source: "qrc:/ui/assets/images/next.png"
-                fillMode: Image.PreserveAspectFit
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        roundSelectPage.visible = false
-                        dataEntryPage.visible = true
-                    }
-                }
-            }
-        }
-
-        Column {
-            id: column2
-            height: 280
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: profileSummary.bottom
-            //anchors.fill: parent
-            anchors.leftMargin: 0
-            anchors.rightMargin: 0
-            anchors.topMargin: 26
-            spacing: 2
-
-            Rectangle {
-                id: reminderCol
-                color: "#151313"
-                height: parent.height / 5
-                width: parent.width
-
-                MouseArea {}
-
-                Label {
-                    id: labelReminder
-                    x: 13
-                    width: 198
-                    color: "#ffffff"
-                    text: qsTr("Start Reminder")
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.leftMargin: 28
-                    anchors.topMargin: 8
-                    anchors.bottomMargin: 12
-                    font.pointSize: 20
-
-                    MouseArea {}
-                }
-
                 Image {
-                    id: image2
-                    x: 352
-                    width: 39
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.rightMargin: 19
-                    anchors.topMargin: 11
-                    anchors.bottomMargin: 9
+                    id: image11
+                    Layout.preferredHeight: 40
+                    Layout.preferredWidth: 40
                     source: "qrc:/ui/assets/images/next.png"
+                    Layout.rightMargin: 0
                     fillMode: Image.PreserveAspectFit
-
-                    MouseArea {}
-                }
-            }
-            Rectangle {
-                id: dataSyncCol
-                color: "#151313"
-                height: parent.height / 5
-                width: parent.width
-
-                MouseArea {}
-
-                Label {
-                    id: dataSyncLabel
-                    x: 13
-                    width: 259
-                    color: "#ffffff"
-                    text: qsTr("Data synchronization")
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.leftMargin: 28
-                    anchors.topMargin: 8
-                    anchors.bottomMargin: 12
-                    font.pointSize: 20
-
-                    MouseArea {}
-                }
-
-                Image {
-                    id: dataSyncImage
-                    x: 352
-                    width: 39
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.rightMargin: 19
-                    anchors.topMargin: 11
-                    anchors.bottomMargin: 9
-                    source: "qrc:/ui/assets/images/next.png"
-                    fillMode: Image.PreserveAspectFit
-
-                    MouseArea {}
-                }
-            }
-            Rectangle {
-                id: feedbackCol
-                color: "#151313"
-                height: parent.height / 5
-                width: parent.width
-
-                MouseArea {}
-
-                Label {
-                    id: feedbackLabel
-                    x: 13
-                    width: 259
-                    color: "#ffffff"
-                    text: qsTr("Feedback")
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.leftMargin: 28
-                    anchors.topMargin: 8
-                    anchors.bottomMargin: 12
-                    font.pointSize: 20
-
-                    MouseArea {}
-                }
-
-                Image {
-                    id: feedbackImage
-                    x: 352
-                    width: 39
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.rightMargin: 19
-                    anchors.topMargin: 11
-                    anchors.bottomMargin: 9
-                    source: "qrc:/ui/assets/images/next.png"
-                    fillMode: Image.PreserveAspectFit
-
-                    MouseArea {}
-                }
-            }
-            Rectangle {
-                id: helpCol
-                color: "#151313"
-                height: parent.height / 5
-                width: parent.width
-
-                MouseArea {}
-
-                Label {
-                    id: helpLabel
-                    x: 13
-                    width: 259
-                    color: "#ffffff"
-                    text: qsTr("Help")
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.leftMargin: 28
-                    anchors.topMargin: 8
-                    anchors.bottomMargin: 12
-                    font.pointSize: 20
-
-                    MouseArea {}
-                }
-
-                Image {
-                    id: helpImage
-                    x: 352
-                    width: 39
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.rightMargin: 19
-                    anchors.topMargin: 11
-                    anchors.bottomMargin: 9
-                    source: "qrc:/ui/assets/images/next.png"
-                    fillMode: Image.PreserveAspectFit
-
-                    MouseArea {}
-                }
-            }
-            Rectangle {
-                id: aboutCol
-                color: "#151313"
-                height: parent.height / 5
-                width: parent.width
-
-                Label {
-                    id: aboutLabel
-                    x: 13
-                    width: 259
-                    color: "#ffffff"
-                    text: qsTr("About")
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.leftMargin: 28
-                    anchors.topMargin: 8
-                    anchors.bottomMargin: 12
-                    font.pointSize: 20
-
-                    MouseArea {}
-                }
-
-                Image {
-                    id: aboutImage
-                    x: 352
-                    width: 39
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.rightMargin: 19
-                    anchors.topMargin: 11
-                    anchors.bottomMargin: 9
-                    source: "qrc:/ui/assets/images/next.png"
-                    fillMode: Image.PreserveAspectFit
-
-                    MouseArea {}
-                }
-            }
-        }
-        Column {
-            id: column3
-            height: 280
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: column2.bottom
-            //anchors.fill: parent
-            anchors.leftMargin: 0
-            anchors.rightMargin: 0
-            anchors.topMargin: 24
-            spacing: 2
-
-            Rectangle {
-                id: signOutCol
-                color: "#151313"
-                height: parent.height / 5
-                width: parent.width
-
-                MouseArea {}
-
-                Label {
-                    id: signOutLabel
-                    x: 13
-                    width: 259
-                    color: "#ffffff"
-                    text: qsTr("Sign out")
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.leftMargin: 28
-                    anchors.topMargin: 8
-                    anchors.bottomMargin: 12
-                    font.pointSize: 20
-
-                    MouseArea {}
-                }
-
-                Image {
-                    id: signOutImage
-                    x: 352
-                    width: 39
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    anchors.rightMargin: 19
-                    anchors.topMargin: 11
-                    anchors.bottomMargin: 9
-                    source: "qrc:/ui/assets/images/next.png"
-                    fillMode: Image.PreserveAspectFit
-
-                    MouseArea {}
+                    //anchors.verticalCenter: parent.verticalCenter
                 }
             }
         }
     }
+
+    ColumnLayout {
+        id: column2
+        width: parent.width
+        //anchors.topMargin: 26
+        anchors.top: profileSummary.bottom
+        anchors.topMargin: 10
+        spacing: 2
+
+        Rectangle {
+            id: reminderCol
+            color: "#151313"
+            Layout.fillWidth: true
+            Layout.preferredHeight: 56
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+
+                    //     roundSelectPage.visible = false
+                    //     dataEntryPage.visible = true
+                }
+            }
+
+            Label {
+                id: labelReminder
+                verticalAlignment: Text.AlignVCenter
+                color: "#ffffff"
+                text: qsTr("Start Reminder")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 10
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                font.pointSize: 20
+            }
+
+            Image {
+                id: image2
+                x: 354
+                width: 39
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 17
+                anchors.topMargin: 14
+                anchors.bottomMargin: 14
+                verticalAlignment: Image.AlignBottom
+                source: "qrc:/ui/assets/images/next.png"
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+
+        Rectangle {
+            id: dataSyncCol
+            color: "#151313"
+            Layout.fillWidth: true
+            Layout.preferredHeight: 56
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+
+                    //     roundSelectPage.visible = false
+                    //     dataEntryPage.visible = true
+                }
+            }
+
+            Label {
+                id: dataSyncLabel
+                verticalAlignment: Text.AlignVCenter
+                color: "#ffffff"
+                text: qsTr("Data synchronization")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 10
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                font.pointSize: 20
+            }
+
+            Image {
+                id: dataSyncImage
+                x: 351
+                width: 39
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 17
+                anchors.topMargin: 14
+                anchors.bottomMargin: 14
+                source: "qrc:/ui/assets/images/next.png"
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+
+        Rectangle {
+            id: feedbackCol
+            color: "#151313"
+            Layout.fillWidth: true
+            Layout.preferredHeight: 56
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+
+                    //     roundSelectPage.visible = false
+                    //     dataEntryPage.visible = true
+                }
+            }
+
+            Label {
+                id: feedbackLabel
+                verticalAlignment: Text.AlignVCenter
+                color: "#ffffff"
+                text: qsTr("Feedback")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 10
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                font.pointSize: 20
+            }
+
+            Image {
+                id: feedbackImage
+                x: 352
+                width: 39
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 17
+                anchors.topMargin: 14
+                anchors.bottomMargin: 14
+                source: "qrc:/ui/assets/images/next.png"
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+
+        Rectangle {
+            id: helpCol
+            color: "#151313"
+            Layout.fillWidth: true
+            Layout.preferredHeight: 56
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+
+                    //     roundSelectPage.visible = false
+                    //     dataEntryPage.visible = true
+                }
+            }
+
+            Label {
+                id: helpLabel
+                verticalAlignment: Text.AlignVCenter
+                color: "#ffffff"
+                text: qsTr("Help")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 10
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                font.pointSize: 20
+            }
+
+            Image {
+                id: helpImage
+                x: 352
+                width: 39
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 17
+                anchors.topMargin: 14
+                anchors.bottomMargin: 14
+                source: "qrc:/ui/assets/images/next.png"
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+
+        Rectangle {
+            id: aboutCol
+            color: "#151313"
+            Layout.fillWidth: true
+            Layout.preferredHeight: 56
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+
+                    //     roundSelectPage.visible = false
+                    //     dataEntryPage.visible = true
+                }
+            }
+
+            Label {
+                id: aboutLabel
+                verticalAlignment: Text.AlignVCenter
+                color: "#ffffff"
+                text: qsTr("About")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 10
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                font.pointSize: 20
+            }
+
+            Image {
+                id: aboutImage
+                x: 352
+                width: 39
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 17
+                anchors.topMargin: 14
+                anchors.bottomMargin: 14
+                source: "qrc:/ui/assets/images/next.png"
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+    }
+
+    ColumnLayout {
+        id: column3
+        width: parent.width
+        anchors.top: column2.bottom
+        anchors.topMargin: 10
+        spacing: 2
+
+        Rectangle {
+            id: signOutCol
+            color: "#151313"
+            Layout.fillWidth: true
+            Layout.preferredHeight: 56
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+
+                    //     roundSelectPage.visible = false
+                    //     dataEntryPage.visible = true
+                }
+            }
+
+            Label {
+                id: signOutLabel
+                verticalAlignment: Text.AlignVCenter
+                color: "#ffffff"
+                text: qsTr("Sign out")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 10
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                font.pointSize: 20
+            }
+
+            Image {
+                id: signOutImage
+                x: 352
+                width: 39
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 17
+                anchors.topMargin: 14
+                anchors.bottomMargin: 14
+                source: "qrc:/ui/assets/images/next.png"
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+    }
+
     Connections {
         target: authHandler
-        function onUserRetrived(username, usergender, userage, userheight, userweight, userhandHabit, userprofilePicture) {
-            // console.log("User profile received:", username, usergender,
-            //             userage, userheight, userweight, userhandHabit,
-            //             userprofilePicture)
+        function onUserRetrieved(username, usergender, userage, userheight, userweight, userhandHabit, userprofilePicture) {
             userImage.source = userprofilePicture
             nameLabel.text = username
             heightLabel.text = userheight
             weightLabel.text = userweight
             handedlabel.text = userhandHabit
+        }
+    }
+
+    Connections {
+        target: device
+        function onCallForWeight() {
+            device.getWeight(weightLabel.text)
         }
     }
 }

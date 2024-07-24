@@ -16,25 +16,24 @@ Image {
     z: -1
     fillMode: Image.Stretch
 
-    Button {
+    Image {
         id: backButton
-        height: 45
-        palette.buttonText: "white"
-        icon.source: "qrc:/ui/assets/images/backArrow.png"
-        icon.height: parent.height
-        icon.width: parent.width
-        font.family: "Tahoma"
-        highlighted: true
-        flat: false
-        anchors.topMargin: 14
+        height: 26
+        source: "qrc:/ui/assets/images/backArrow.png"
+        anchors.topMargin: 16
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pageloader.pageLoader("backHome")
+            }
+        }
 
-        onClicked: pageloader.pageLoader("backHome")
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            rightMargin: 325
-            leftMargin: 4
+            rightMargin: 372
+            leftMargin: 14
         }
     }
 

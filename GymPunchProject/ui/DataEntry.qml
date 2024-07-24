@@ -36,6 +36,27 @@ Rectangle {
     anchors.topMargin: 0
 
     Image {
+        id: backButton
+        height: 26
+        source: "qrc:/ui/assets/images/backArrow.png"
+        anchors.topMargin: 16
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pageloader.pageLoader("roundselect")
+            }
+        }
+
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+            rightMargin: 372
+            leftMargin: 14
+        }
+    }
+
+    Image {
         id: profileImage
         height: 120
         anchors.left: parent.left
@@ -460,7 +481,7 @@ Rectangle {
             userInfoPage.visible = false
             quickStartPage.visible = true
         }
-        function onUserRetrived(username, usergender, userage, userheight, userweight, userhandHabit, userprofilePicture) {
+        function onUserRetrieved(username, usergender, userage, userheight, userweight, userhandHabit, userprofilePicture) {
             // console.log("User profile received:", username, usergender,
             //             userage, userheight, userweight, userhandHabit,
             //             userprofilePicture)
@@ -486,5 +507,13 @@ Rectangle {
             }
         }
         return -1 // Value not found in the model
+    }
+    Connections {
+        target: pageloader
+        function onSwitchToRoundSeleectPage() {
+            roundSelectPage.visible = true
+            //profilePage.visible = true
+            dataEntryPage.visible = false
+        }
     }
 }

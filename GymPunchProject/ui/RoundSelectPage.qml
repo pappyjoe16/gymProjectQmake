@@ -53,6 +53,7 @@ Rectangle {
             onLoaded: //item.activeChanged.connect(function () {
             {
                 tabBar.currentIndex = 0
+                //quickStartPage.visible = true
             }
         }
         Loader {
@@ -61,6 +62,7 @@ Rectangle {
             onLoaded: //item.activeChanged.connect(function () {
             {
                 tabBar.currentIndex = 1
+                //dataPage.visible = true
             }
         }
         Loader {
@@ -69,7 +71,7 @@ Rectangle {
             onLoaded: //item.activeChanged.connect(function () {
             {
                 tabBar.currentIndex = 2
-                //authHandler.retriveProfile()
+                //profilePage.visible = true
             }
         }
     }

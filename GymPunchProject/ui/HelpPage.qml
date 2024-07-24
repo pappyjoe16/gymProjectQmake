@@ -12,27 +12,27 @@ Rectangle {
     anchors.leftMargin: 0
     anchors.topMargin: 0
 
-    Button {
+    Image {
         id: backButton
-        height: 38
-        palette.buttonText: "white"
-        icon.source: "qrc:/ui/assets/images/backArrow.png"
-        icon.height: parent.height
-        icon.width: parent.width
-        font.family: "Tahoma"
-        highlighted: true
-        flat: false
+        height: 26
+        source: "qrc:/ui/assets/images/backArrow.png"
         anchors.topMargin: 16
-        onClicked: pageloader.pageLoader("backToConnect")
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+               pageloader.pageLoader("backToConnect")
+            }
+        }
 
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            rightMargin: 347
-            leftMargin: 4
+            rightMargin: 372
+            leftMargin: 14
         }
     }
+
     Label {
         id: pageTitleLabel
         height: 37

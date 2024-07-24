@@ -182,7 +182,7 @@ void AuthHandler::profileReplyReadyRead()
             if (jsonObject["status"].toBool()) {
                 QJsonArray dataArray = jsonObject["data"].toArray();
 
-                foreach (const QJsonValue &value, dataArray) {
+                for (const QJsonValue &value : dataArray) {
                     QJsonObject dataObject = value.toObject();
 
                     QString docId = dataObject["id"].toString();
@@ -207,13 +207,13 @@ void AuthHandler::profileReplyReadyRead()
                     m_userprofilePicture = userprofilePicture;
                 }
             }
-            emit userRetrived(m_username,
-                              m_usergender,
-                              m_userage,
-                              m_userheight,
-                              m_userweight,
-                              m_userhandHabit,
-                              m_userprofilePicture);
+            emit userRetrieved(m_username,
+                               m_usergender,
+                               m_userage,
+                               m_userheight,
+                               m_userweight,
+                               m_userhandHabit,
+                               m_userprofilePicture);
 
         } else {
             qDebug() << "Error from user profile:" << m_networkReply->errorString();

@@ -976,5 +976,17 @@
         <file>ui/RoundSelectPage.qml</file>
         <file>ui/assets/images/next.png</file>
         <file>ui/assets/images/user.png</file>
+        <file>android/gradle/wrapper/gradle-wrapper.jar</file>
+        <file>android/gradle/wrapper/gradle-wrapper.properties</file>
+        <file>android/libs/fitblekit_3132.aar</file>
+        <file>android/res/values/libs.xml</file>
+        <file>android/res/xml/qtprovider_paths.xml</file>
+        <file>android/build.gradle</file>
+        <file>android/gradle.properties</file>
+        <file>android/gradlew</file>
+        <file>android/gradlew.bat</file>
+        <file>android/src/JavaClass.java</file>
+        <file>ui/assets/images/heart-rate.png</file>
+        <file>ui/assets/images/calories.png</file>
     </qresource>
 </RCC>

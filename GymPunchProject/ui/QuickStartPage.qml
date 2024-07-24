@@ -42,7 +42,7 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     pageloader.pageLoader("connectPage")
-                    console.log("Quick Image clicked!")
+                    //console.log("Quick Image clicked!")
                 }
             }
         }
@@ -50,7 +50,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 pageloader.pageLoader("connectPage")
-                console.log("Quick Image clicked!")
+                //console.log("Quick Image clicked!")
             }
         }
         anchors {

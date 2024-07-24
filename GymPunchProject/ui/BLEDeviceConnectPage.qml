@@ -28,29 +28,27 @@ Rectangle {
     anchors.leftMargin: 0
     anchors.topMargin: 0
 
-    Button {
+    // Declare an empty array
+    property var punchDevice: [null, null]
+
+    Image {
         id: backButton
-        height: 38
-        palette.buttonText: "white"
-        icon.source: "qrc:/ui/assets/images/backArrow.png"
-        icon.height: parent.height
-        icon.width: parent.width
-        font.family: "Tahoma"
-        highlighted: true
-        flat: false
+        height: 26
+        source: "qrc:/ui/assets/images/backArrow.png"
         anchors.topMargin: 16
-        onClicked: {
-            pageloader.pageLoader("backToQuickstart")
-            bleModelRight.clear()
-            bleModelLeft.clear()
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pageloader.pageLoader("backToQuickstart")
+            }
         }
 
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            rightMargin: 347
-            leftMargin: 4
+            rightMargin: 372
+            leftMargin: 14
         }
     }
 
@@ -104,7 +102,7 @@ Rectangle {
                 height: parent.height // Adjust height as needed
 
                 delegate: Rectangle {
-
+                    id: bleDelegate
                     width: bleListViewLeft.width
                     height: 50
                     color: index % 2 === 0 ? "#262626" : "#404040"
@@ -113,8 +111,14 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            //device.connectDevice(bleAddress)
-                            console.log(bleName + ": " + bleAddress)
+                            bleDelegate.color = "#993333"
+                            rectangle.punchDevice[0] = bleAddress
+                            //console.log(bleName + ": " + bleAddress)
+                            if (rectangle.punchDevice[0]
+                                    && rectangle.punchDevice[1] != null) {
+                                connectButton.enabled = true
+                                connectButton.visible = true
+                            }
                         }
                     }
 
@@ -151,9 +155,9 @@ Rectangle {
                 // If bleAddress doesn't exist, append the new device
                 if (!addressExists) {
                     bleModelLeft.append({
-                                        "bleName": bleName,
-                                        "bleAddress": bleAddress
-                                    })
+                                            "bleName": bleName,
+                                            "bleAddress": bleAddress
+                                        })
                 } else {
                     // Handle the case when the address already exists (optional)
                     console.log("Address already exists: " + bleAddress)
@@ -216,7 +220,7 @@ Rectangle {
                 height: parent.height // Adjust height as needed
 
                 delegate: Rectangle {
-
+                    id: bleDelegate1
                     width: bleListViewRight.width
                     height: 50
                     color: index % 2 === 0 ? "#262626" : "#404040"
@@ -225,8 +229,13 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            //device.connectDevice(bleAddress)
-                            console.log(bleName + ": " + bleAddress)
+                            bleDelegate1.color = "#993333"
+                            rectangle.punchDevice[1] = bleAddress
+                            //console.log(bleName + ": " + bleAddress)
+                            if (punchDevice[0] && punchDevice[1] != null) {
+                                connectButton.enabled = true
+                                connectButton.visible = true
+                            }
                         }
                     }
 
@@ -262,9 +271,9 @@ Rectangle {
                 // If bleAddress doesn't exist, append the new device
                 if (!addressExists) {
                     bleModelRight.append({
-                                        "bleName": bleName,
-                                        "bleAddress": bleAddress
-                                    })
+                                             "bleName": bleName,
+                                             "bleAddress": bleAddress
+                                         })
                 } else {
                     // Handle the case when the address already exists (optional)
                     console.log("Address already exists: " + bleAddress)
@@ -290,9 +299,10 @@ Rectangle {
         anchors.bottomMargin: 26
         font.pointSize: 16
         highlighted: true
+        enabled: false
+        visible: false
         onClicked: {
             pageloader.pageLoader("ToHeartRateDevice")
-
         }
     }
 
@@ -381,7 +391,10 @@ Rectangle {
     Connections {
         target: pageloader
         function onSwitchToQuickstart() {
+            bleModelRight.clear()
+            bleModelLeft.clear()
             roundSelectPage.visible = true
+            quickStartPage.visible = true
             deviceConnectPage.visible = false
         }
         function onSwitchToHelpPage() {
@@ -389,9 +402,12 @@ Rectangle {
             deviceConnectPage.visible = false
         }
         function onSwitchToHeartRateDevice() {
+
+            for (var i = 0; i < rectangle.punchDevice.length; i++) {
+                heartRateDevicePage.bleDevice[i] = rectangle.punchDevice[i]
+            }
             deviceConnectPage.visible = false
             heartRateDevicePage.visible = true
-            device.startDeviceDiscovery()
         }
     }
 
@@ -407,6 +423,5 @@ Rectangle {
             //console.log(bleName + ": " + bleAddress)
             rightViewContainer.addBleDevicRight(bleName, bleAddress)
         }
-
     }
 }

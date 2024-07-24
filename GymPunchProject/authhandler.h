@@ -53,13 +53,13 @@ signals:
     void signUpErrorSignal(QString signUpErrorMessage);
     void userAdded();
     void userUpdated();
-    void userRetrived(const QString &name,
-                      const QString &gender,
-                      const QString &age,
-                      const QString &height,
-                      const QString &weight,
-                      const QString &handHabit,
-                      const QString &profilePicture);
+    void userRetrieved(const QString &name,
+                       const QString &gender,
+                       const QString &age,
+                       const QString &height,
+                       const QString &weight,
+                       const QString &handHabit,
+                       const QString &profilePicture);
     //void refreshToken(QString refreshToken);
 
 private:

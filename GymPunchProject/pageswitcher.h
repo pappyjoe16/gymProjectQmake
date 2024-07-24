@@ -24,6 +24,7 @@ signals:
     void switchBackToHeartRateDevice();
     void switchToHeartRateDevice();
     void switchToSensorReadingPage();
+    void switchToRoundSeleectPage();
 
 public slots:
 

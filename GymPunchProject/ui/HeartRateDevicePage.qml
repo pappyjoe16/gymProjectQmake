@@ -5,23 +5,6 @@ Rectangle {
     id: rectangle
     width: 410
     height: 740
-    // gradient: Gradient {
-    //     GradientStop {
-    //         position: 0
-    //         color: "#100412"
-    //     }
-
-    //     GradientStop {
-    //         position: 0.58579
-    //         color: "#93676b"
-    //     }
-
-    //     GradientStop {
-    //         position: 0.92544
-    //         color: "#670505"
-    //     }
-    //     orientation: Gradient.Vertical
-    // }
     color: "black"
     anchors.fill: parent
     anchors.rightMargin: 0
@@ -29,28 +12,27 @@ Rectangle {
     anchors.leftMargin: 0
     anchors.topMargin: 0
 
-    Button {
+    property var bleDevice: [null, null, null]
+
+    Image {
         id: backButton
-        height: 38
-        palette.buttonText: "white"
-        icon.source: "qrc:/ui/assets/images/backArrow.png"
-        icon.height: parent.height
-        icon.width: parent.width
-        font.family: "Tahoma"
-        highlighted: true
-        flat: false
+        height: 26
+        source: "qrc:/ui/assets/images/backArrow.png"
         anchors.topMargin: 16
-        onClicked: {
-            pageloader.pageLoader("backToBLEConnect")
-            bleModel.clear()
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pageloader.pageLoader("backToBLEConnect")
+                bleModel.clear()
+            }
         }
 
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            rightMargin: 347
-            leftMargin: 4
+            rightMargin: 372
+            leftMargin: 14
         }
     }
 
@@ -82,7 +64,6 @@ Rectangle {
 
         onClicked: {
             pageloader.pageLoader("ToSensorReadingPage")
-
         }
     }
 
@@ -183,7 +164,7 @@ Rectangle {
             height: parent.height // Adjust height as needed
 
             delegate: Rectangle {
-
+                id: bleDelegate
                 width: bleListView.width
                 height: 50
                 color: index % 2 === 0 ? "#262626" : "#404040"
@@ -192,9 +173,13 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        addressLabel.text = bleAddress
-                        connectButton.enabled = true
-                        console.log(bleName + ": " + bleAddress)
+                        //addressLabel.text = bleAddress
+                        bleDelegate.color = "#993333"
+                        rectangle.bleDevice[2] = bleAddress
+                        if (rectangle.bleDevice[2] != null) {
+                            console.log(bleName + ": " + rectangle.bleDevice[2])
+                            connectButton.enabled = true
+                        }
                     }
                 }
 
@@ -244,19 +229,39 @@ Rectangle {
         }
     }
 
+    Timer {
+        id: countdownTimer
+        interval: 1000 // 0.5 second
+        repeat: true
+        onTriggered: {
+            if (rectangle.countdownValue > 0) {
+                rectangle.countdownValue -= 1
+            } else {
+                for (var i = 0; i < ((rectangle.bleDevice.length) - 1); i++) {
+                    device.javaConnectDevice(rectangle.bleDevice[i])
+                }
+                countdownTimer.stop()
+            }
+        }
+    }
+
+    property double countdownValue: 3
+
     Connections {
         target: pageloader
         function onSwitchToBLEConnect() {
+            bleModel.clear()
             deviceConnectPage.visible = true
             heartRateDevicePage.visible = false
         }
         function onSwitchToSensorReadingPage() {
-            device.connectDevice(addressLabel.text)
-            console.log("New Heart Address: " + addressLabel.text)
+            //device.connectDevice(addressLabel.text)
+            device.connectDevice(rectangle.bleDevice[2])
+            countdownTimer.start()
+            //console.log("New Heart Address: " + addressLabel.text)
             sensorReadingPage.visible = true
             heartRateDevicePage.visible = false
         }
-
     }
 
     Connections {

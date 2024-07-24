@@ -67,25 +67,24 @@ Image {
         }
     }
 
-    Button {
+    Image {
         id: backButton
-        height: 45
-        palette.buttonText: "white"
-        icon.source: "qrc:/ui/assets/images/backArrow.png"
-        icon.height: parent.height
-        icon.width: parent.width
-        font.family: "Tahoma"
-        highlighted: true
-        flat: false
-        anchors.topMargin: 14
-        onClicked: pageloader.pageLoader("backHome")
+        height: 26
+        source: "qrc:/ui/assets/images/backArrow.png"
+        anchors.topMargin: 16
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pageloader.pageLoader("backHome")
+            }
+        }
 
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            rightMargin: 325
-            leftMargin: 4
+            rightMargin: 372
+            leftMargin: 14
         }
     }
 

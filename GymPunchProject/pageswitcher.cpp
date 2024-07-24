@@ -40,5 +40,7 @@ void Pageswitcher::pageLoader(const QString page)
         emit switchToHeartRateDevice();
     } else if (page == "ToSensorReadingPage") {
         emit switchToSensorReadingPage();
+    } else if (page == "roundselect") {
+        emit switchToRoundSeleectPage();
     }
 }
