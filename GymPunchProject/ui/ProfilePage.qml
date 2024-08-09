@@ -390,9 +390,11 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-
-                    //     roundSelectPage.visible = false
-                    //     dataEntryPage.visible = true
+                    signupPage.deleteAllLoginDetails()
+                    profilePage.visible = false
+                    roundSelectPage.visible = false
+                    quickStartPage.visible = false
+                    mainPage.visible = true
                 }
             }
 

@@ -25,6 +25,8 @@ signals:
     void switchToHeartRateDevice();
     void switchToSensorReadingPage();
     void switchToRoundSeleectPage();
+    void switchToRoundPlanPage();
+    void switchTotrainingPlanPage();
 
 public slots:
 

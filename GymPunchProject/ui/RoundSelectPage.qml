@@ -19,18 +19,27 @@ Rectangle {
 
         TabButton {
             text: qsTr("Train")
+            font.pointSize: 14
+            spacing: -2
+            icon.width: 20
             icon.source: "qrc:/ui/assets/images/boxing.png"
             display: AbstractButton.TextUnderIcon
             onClicked: stackLayout.currentIndex = 0
         }
         TabButton {
             text: qsTr("Data")
+            font.pointSize: 14
+            spacing: -2
+            icon.width: 20
             icon.source: "qrc:/ui/assets/images/dataOn.png"
             display: AbstractButton.TextUnderIcon
             onClicked: stackLayout.currentIndex = 1
         }
         TabButton {
             text: qsTr("Profile")
+            font.pointSize: 14
+            spacing: -2
+            icon.width: 19
             icon.source: "qrc:/ui/assets/images/mineOn.png"
             display: AbstractButton.TextUnderIcon
             onClicked: {

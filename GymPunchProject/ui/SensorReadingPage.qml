@@ -982,9 +982,9 @@ Rectangle {
 
     Rectangle {
         id: circularProgressContainer
-        width: 180
-        height: 180
-        radius: 90
+        width: 150
+        height: 150
+        radius: 75
         visible: false
         color: "transparent"
         anchors.centerIn: parent
@@ -996,7 +996,7 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.bold: true
-            font.pointSize: 30
+            font.pointSize: 40
             anchors.centerIn: parent
             color: "white"
         }

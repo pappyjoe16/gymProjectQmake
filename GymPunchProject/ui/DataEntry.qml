@@ -203,6 +203,31 @@ Rectangle {
                 opacity: 1
             }
         }
+        popup: Popup {
+            width: 150 // Match this with the ComboBox width
+            height: 200 // Set a fixed height for the popup
+            implicitWidth: 150 // Ensure the popup doesn't resize dynamically
+            implicitHeight: 200 // Ensure the popup doesn't resize dynamically
+
+            // Customize the appearance of each item in the dropdown list
+            contentItem: ListView {
+                width: parent.width
+                height: parent.height
+                model: genderBox.delegateModel
+
+                delegate: ItemDelegate {
+                    width: parent.width
+                    contentItem: Text {
+                        text: modelData.text
+                        color: "white"
+                        font.pixelSize: 18
+                    }
+                }
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AlwaysOn
+                }
+            }
+        }
         model: [{
                 "value": Qt.NoModifier,
                 "text": qsTr("select gender")
@@ -231,6 +256,31 @@ Rectangle {
             top: genderBox.bottom
             rightMargin: 43
             leftMargin: 43
+        }
+        popup: Popup {
+            width: 150 // Match this with the ComboBox width
+            height: 200 // Set a fixed height for the popup
+            implicitWidth: 150 // Ensure the popup doesn't resize dynamically
+            implicitHeight: 200 // Ensure the popup doesn't resize dynamically
+
+            // Customize the appearance of each item in the dropdown list
+            contentItem: ListView {
+                width: parent.width
+                height: parent.height
+                model: ageBox.delegateModel
+
+                delegate: ItemDelegate {
+                    width: parent.width
+                    contentItem: Text {
+                        text: modelData.text
+                        color: "white"
+                        font.pixelSize: 18
+                    }
+                }
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AlwaysOn
+                }
+            }
         }
         model: (function () {
             var data = []
@@ -274,6 +324,31 @@ Rectangle {
             rightMargin: 43
             leftMargin: 43
         }
+        popup: Popup {
+            width: 150 // Match this with the ComboBox width
+            height: 200 // Set a fixed height for the popup
+            implicitWidth: 150 // Ensure the popup doesn't resize dynamically
+            implicitHeight: 200 // Ensure the popup doesn't resize dynamically
+
+            // Customize the appearance of each item in the dropdown list
+            contentItem: ListView {
+                width: parent.width
+                height: parent.height
+                model: heightBox.delegateModel
+
+                delegate: ItemDelegate {
+                    width: parent.width
+                    contentItem: Text {
+                        text: modelData.text
+                        color: "white"
+                        font.pixelSize: 18
+                    }
+                }
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AlwaysOn
+                }
+            }
+        }
         model: (function () {
             var data = []
             data.push({
@@ -314,6 +389,31 @@ Rectangle {
             top: heightBox.bottom
             rightMargin: 43
             leftMargin: 43
+        }
+        popup: Popup {
+            width: 150 // Match this with the ComboBox width
+            height: 200 // Set a fixed height for the popup
+            implicitWidth: 150 // Ensure the popup doesn't resize dynamically
+            implicitHeight: 200 // Ensure the popup doesn't resize dynamically
+
+            // Customize the appearance of each item in the dropdown list
+            contentItem: ListView {
+                width: parent.width
+                height: parent.height
+                model: weightBox.delegateModel
+
+                delegate: ItemDelegate {
+                    width: parent.width
+                    contentItem: Text {
+                        text: modelData.text
+                        color: "white"
+                        font.pixelSize: 18
+                    }
+                }
+                ScrollBar.vertical: ScrollBar {
+                    policy: ScrollBar.AlwaysOn
+                }
+            }
         }
         model: (function () {
             var data = []
@@ -366,6 +466,28 @@ Rectangle {
                 color: "#ffffff"
                 radius: 15
                 opacity: 1
+            }
+        }
+        popup: Popup {
+            width: 150 // Match this with the ComboBox width
+            height: 200 // Set a fixed height for the popup
+            implicitWidth: 150 // Ensure the popup doesn't resize dynamically
+            implicitHeight: 200 // Ensure the popup doesn't resize dynamically
+
+            // Customize the appearance of each item in the dropdown list
+            contentItem: ListView {
+                width: parent.width
+                height: parent.height
+                model: handBox.delegateModel
+
+                delegate: ItemDelegate {
+                    width: parent.width
+                    contentItem: Text {
+                        text: modelData.text
+                        color: "white"
+                        font.pixelSize: 18
+                    }
+                }
             }
         }
         model: [{

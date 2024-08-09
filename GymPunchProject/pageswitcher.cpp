@@ -42,5 +42,9 @@ void Pageswitcher::pageLoader(const QString page)
         emit switchToSensorReadingPage();
     } else if (page == "roundselect") {
         emit switchToRoundSeleectPage();
+    } else if (page == "roundType") {
+        emit switchToRoundPlanPage();
+    } else if (page == "trainingPage") {
+        emit switchTotrainingPlanPage();
     }
 }

@@ -35,8 +35,8 @@ Window {
         signupPage.creatDB()
         var loginDetails = signupPage.retrieveLoginDetails()
         if (loginDetails.exist) {
-            console.log("Username: " + loginDetails.username + ", Password: "
-                        + loginDetails.password)
+            //console.log("Username: " + loginDetails.username + ", Password: "
+            //            + loginDetails.password)
             loginPage.callLogin(loginDetails.username, loginDetails.password)
             // if (errorMessage === "INVALID_LOGIN_CREDENTIALS") {
             //     return true
@@ -118,6 +118,14 @@ Window {
     }
     RoundSelectPage {
         id: roundSelectPage
+        visible: false
+    }
+    TrainingPlan {
+        id: trainingPlan
+        visible: false
+    }
+    RoundTypePage {
+        id: roundType
         visible: false
     }
 

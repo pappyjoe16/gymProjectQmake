@@ -87,8 +87,8 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     // Handle the click event here
-                    console.log("Training Image clicked!")
-                    roundSelectPage.visible = true
+                    //console.log("Training Image clicked!")
+                    pageloader.pageLoader("roundType")
                     // Add your custom logic or navigate to another page, etc.
                 }
             }
@@ -97,8 +97,8 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 // Handle the click event here
-                console.log("Training Image clicked!")
-                roundSelectPage.visible = true
+                //console.log("Training Image clicked!")
+                pageloader.pageLoader("roundType")
                 // Add your custom logic or navigate to another page, etc.
             }
         }
@@ -119,6 +119,11 @@ Rectangle {
             quickStartPage.visible = false
             roundSelectPage.visible = false
             device.startDeviceDiscovery()
+        }
+        function onSwitchToRoundPlanPage() {
+            roundType.visible = true
+            quickStartPage.visible = false
+            roundSelectPage.visible = false
         }
     }
 }

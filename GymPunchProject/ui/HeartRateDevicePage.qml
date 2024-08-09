@@ -49,7 +49,7 @@ Rectangle {
         anchors.bottomMargin: 26
         font.pointSize: 16
         highlighted: true
-        enabled: false
+        enabled: true
 
         Label {
             id: addressLabel

@@ -988,5 +988,12 @@
         <file>android/src/JavaClass.java</file>
         <file>ui/assets/images/heart-rate.png</file>
         <file>ui/assets/images/calories.png</file>
+        <file>ui/assets/images/down.png</file>
+        <file>ui/TrainingPlan.qml</file>
+        <file>ui/assets/images/clock-tool.png</file>
+        <file>ui/RoundTypePage.qml</file>
+        <file>android/src/GoogleSignIn.java</file>
+        <file>ui/assets/images/close.png</file>
+        <file>ui/assets/images/google.png</file>
     </qresource>
 </RCC>

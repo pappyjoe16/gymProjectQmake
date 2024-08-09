@@ -67,6 +67,17 @@ Image {
         }
     }
 
+    function deleteAllLoginDetails() {
+        var db = LocalStorage.openDatabaseSync("GymAppDB", "1.0",
+                                               "Storage for login details",
+                                               1000000)
+
+        db.transaction(function (tx) {
+            tx.executeSql('DELETE FROM LoginDetails')
+            console.log("All login details deleted successfully.")
+        })
+    }
+
     Image {
         id: backButton
         height: 26
